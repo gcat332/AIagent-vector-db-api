@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created Date: 2015-01-16 11:54:17 -->
+<Models>
+<Model Name="CLP-650" DrvName="Samsung CLP-650 Series" CMSTable="spd0i" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0h</OEMID></Model>
+<Model Name="CLP-550" DrvName="Samsung CLP-550 Series" CMSTable="spd0l" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0j</OEMID></Model>
+<Model Name="ML-3560" DrvName="Samsung ML-3560 Series" CMSTable="spd0u" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0u</OEMID></Model>
+<Model Name="ML-2550" DrvName="Samsung ML-2550 Series" CMSTable="spd1a" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0z</OEMID></Model>
+<Model Name="ML-2550S" DrvName="Samsung ML-2550S Series" CMSTable="spd1a" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0z</OEMID></Model>
+<Model Name="ML-2150" DrvName="Samsung ML-2150 Series" CMSTable="spd1a" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1a</OEMID></Model>
+<Model Name="ML-2250" DrvName="Samsung ML-2250 Series" CMSTable="spd1b" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1b</OEMID></Model>
+<Model Name="ML-1750" DrvName="Samsung ML-1750 Series" CMSTable="spd1e" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1e</OEMID></Model>
+<Model Name="ML-1450" DrvName="Samsung ML-1450 Series" CMSTable="spd1q" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1q</OEMID></Model>
+<Model Name="ML-6070" DrvName="Samsung ML-6070 Series" CMSTable="spd1q" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1r</OEMID></Model>
+<Model Name="ML-6080" DrvName="Samsung ML-6080 Series" CMSTable="spd1q" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1r</OEMID></Model>
+<Model Name="SCX-6x45 Series" DrvName="Samsung SCX-6x45 Series" NoValuePack="TRUE"><OEMID>spda0</OEMID></Model>
+<Model Name="ML-2850 Series" DrvName="Samsung ML-2850 Series" CMSTable="spda1" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spda1</OEMID></Model>
+<Model Name="ML-4050 Series" DrvName="Samsung ML-4050 Series" NoValuePack="TRUE"><OEMID>spda2</OEMID></Model>
+<Model Name="CLP-610" DrvName="Samsung CLP-610 Series" CMSTable="spda3" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spda3</OEMID></Model>
+<Model Name="ML-8x00 Series" DrvName="Samsung ML-8x00 Series" NoValuePack="TRUE"><OEMID>spda5</OEMID></Model>
+<Model Name="ML-3470 Series" DrvName="Samsung ML-3470 Series" CMSTable="spda6" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spda6</OEMID></Model>
+<Model Name="SCX-6x55 Series" DrvName="Samsung SCX-6x55 Series" NoValuePack="TRUE"><OEMID>spda7</OEMID></Model>
+<Model Name="SCX-4x28 Series" DrvName="Samsung SCX-4x28 Series" NoValuePack="TRUE"><OEMID>spda8</OEMID></Model>
+<Model Name="SCX-4x24 Series" DrvName="Samsung SCX-4x24 Series" NoValuePack="TRUE"><OEMID>spda9</OEMID></Model>
+<Model Name="ML-2855 Series" DrvName="Samsung ML-2855 Series" CMSTable="spda1" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdb0</OEMID></Model>
+<Model Name="CLX-8380 Series" DrvName="Samsung CLX-8380 Series" NoValuePack="TRUE"><OEMID>spdb1</OEMID></Model>
+<Model Name="CLX-6240 Series" DrvName="Samsung CLX-6240 Series" CMSTable="spdb2" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdb2</OEMID></Model>
+<Model Name="CLX-6200 Series" DrvName="Samsung CLX-6200 Series" CMSTable="spda3" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdb3</OEMID></Model>
+<Model Name="CLP-660" DrvName="Samsung CLP-660 Series" CMSTable="spdb2" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdb4</OEMID></Model>
+<Model Name="CLP-350 Series" DrvName="Samsung CLP-350 Series" CMSTable="spdb5" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdb5</OEMID></Model>
+<Model Name="ML-4550 Series" DrvName="Samsung ML-4550 Series" NoValuePack="TRUE"><OEMID>spdb6</OEMID></Model>
+<Model Name="SCX-4725 Series" DrvName="Samsung SCX-4725 Series" NoValuePack="TRUE"><OEMID>spdb7</OEMID></Model>
+<Model Name="SCX-6x22 Series" DrvName="Samsung SCX-6x22 Series" NoValuePack="TRUE"><OEMID>spdb8</OEMID></Model>
+<Model Name="ML-2570 Series" DrvName="Samsung ML-2570 Series" CMSTable="spdb9" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdb9</OEMID></Model>
+<Model Name="SCX-5x30 Series" DrvName="Samsung SCX-5x30 Series" NoValuePack="TRUE"><OEMID>spdc0</OEMID></Model>
+<Model Name="ML-3050" DrvName="Samsung ML-3050 Series" CMSTable="spda6" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdc1</OEMID></Model>
+<Model Name="SCX-4x20 Series" DrvName="Samsung SCX-4x20 Series" NoValuePack="TRUE"><OEMID>spdc4</OEMID></Model>
+<Model Name="SCX-5x15 Series" DrvName="Samsung SCX-5x15 Series" NoValuePack="TRUE"><OEMID>spdc5</OEMID></Model>
+<Model Name="SCX-6x20 Series" DrvName="Samsung SCX-6x20 Series" NoValuePack="TRUE"><OEMID>spdc6</OEMID></Model>
+<Model Name="MFP 830 Series" DrvName="Samsung MFP 830 Series" NoValuePack="TRUE"><OEMID>spdc7</OEMID></Model>
+<Model Name="SCX-5835_5935 Series" DrvName="Samsung SCX-5835_5935 Series" NoValuePack="TRUE"><OEMID>spdc8</OEMID></Model>
+<Model Name="SCX-5635 Series" DrvName="Samsung SCX-5635 Series" NoValuePack="TRUE"><OEMID>spdc9</OEMID></Model>
+<Model Name="CLP-770 Series" DrvName="Samsung CLP-770 Series" CMSTable="spdd0" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdd0</OEMID></Model>
+<Model Name="CLP-620 Series" DrvName="Samsung CLP-620 Series" CMSTable="spdd1" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdd1</OEMID></Model>
+<Model Name="CLP-670 Series" DrvName="Samsung CLP-670 Series" NoValuePack="TRUE"><OEMID>spdd2</OEMID></Model>
+<Model Name="CLX-8385 Series" DrvName="Samsung CLX-8385 Series" NoValuePack="TRUE"><OEMID>spdd3</OEMID></Model>
+<Model Name="CLX-6250 Series" DrvName="Samsung CLX-6250 Series" NoValuePack="TRUE"><OEMID>spdd4</OEMID></Model>
+<Model Name="CLX-6220 Series" DrvName="Samsung CLX-6220 Series" CMSTable="spdd1" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdd5</OEMID></Model>
+<Model Name="ML-2580 Series" DrvName="Samsung ML-2580 Series" CMSTable="spdd6" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spdd6</OEMID></Model>
+<Model Name="SCX-6545 Series" DrvName="Samsung SCX-6545 Series" NoValuePack="TRUE"><OEMID>spdd7</OEMID></Model>
+<Model Name="SCX-4x25 Series" DrvName="Samsung SCX-4x25 Series" NoValuePack="TRUE"><OEMID>spdd8</OEMID></Model>
+<Model Name="CLX-8540 Series" DrvName="Samsung CLX-8540 Series" NoValuePack="TRUE"><OEMID>spdd9</OEMID></Model>
+<Model Name="CLX-9250 9350 Series" DrvName="Samsung CLX-9250 9350 Series" NoValuePack="TRUE"><OEMID>spde1</OEMID></Model>
+<Model Name="SCX-8030 8040 Series" DrvName="Samsung SCX-8030 8040 Series" NoValuePack="TRUE"><OEMID>spde2</OEMID></Model>
+<Model Name="ML-4555 Series" DrvName="Samsung ML-4555 Series" NoValuePack="TRUE"><OEMID>spde3</OEMID></Model>
+<Model Name="ML-3475 Series" DrvName="Samsung ML-3475 Series" CMSTable="spde4" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spde4</OEMID></Model>
+<Model Name="ML-2853 Series" DrvName="Samsung ML-2853 Series" CMSTable="spde5" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spde5</OEMID></Model>
+<Model Name="ML-4055 Series" DrvName="Samsung ML-4055 Series" NoValuePack="TRUE"><OEMID>spde6</OEMID></Model>
+<Model Name="CLX-8385X Series" DrvName="Samsung CLX-8385X Series" NoValuePack="TRUE"><OEMID>spde7</OEMID></Model>
+<Model Name="CLX-8540X Series" DrvName="Samsung CLX-8540X Series" NoValuePack="TRUE"><OEMID>spde8</OEMID></Model>
+<Model Name="SCX-5835_5935X Series" DrvName="Samsung SCX-5835_5935X Series" NoValuePack="TRUE"><OEMID>spde9</OEMID></Model>
+<Model Name="SCX-6x55X Series" DrvName="Samsung SCX-6x55X Series" NoValuePack="TRUE"><OEMID>spdf0</OEMID></Model>
+<Model Name="SCX-6545X Series" DrvName="Samsung SCX-6545X Series" NoValuePack="TRUE"><OEMID>spdf1</OEMID></Model>
+<Model Name="ML-8850 8950 Series" DrvName="Samsung ML-8850 8950 Series" NoValuePack="TRUE"><OEMID>spdf2</OEMID></Model>
+<Model Name="ML-371x Series" DrvName="Samsung ML-371x Series" NoValuePack="TRUE"><OEMID>ssi2m</OEMID></Model>
+<Model Name="SCX-483x 5x3x Series" DrvName="Samsung SCX-483x 5x3x Series" NoValuePack="TRUE"><OEMID>ssn2m</OEMID></Model>
+<Model Name="ML-551x 651x Series" DrvName="Samsung ML-551x 651x Series" NoValuePack="TRUE"><OEMID>ssh2m</OEMID></Model>
+<Model Name="ML-451x 501x Series" DrvName="Samsung ML-451x 501x Series" NoValuePack="TRUE"><OEMID>sse2m</OEMID></Model>
+<Model Name="CLP-775 Series" DrvName="Samsung CLP-775 Series" NoValuePack="TRUE"><OEMID>ssz2c</OEMID></Model>
+<Model Name="ML-2950 Series" DrvName="Samsung ML-2950 Series" CMSTable="ssk3m" NoValuePack="TRUE"><OEMID>ssk3m</OEMID></Model>
+<Model Name="SCX-472x Series" DrvName="Samsung SCX-472x Series" CMSTable="ssa3m" NoValuePack="TRUE"><OEMID>ssa3m</OEMID></Model>
+<Model Name="CLP-680 Series" DrvName="Samsung CLP-680 Series" CMSTable="ssd3c"><OEMID>ssd3c</OEMID></Model>
+<Model Name="CLX-6260 Series" DrvName="Samsung CLX-6260 Series" CMSTable="ssy3c"><OEMID>ssy3c</OEMID></Model>
+<Model Name="CLP-410 Series" DrvName="Samsung CLP-410 Series" CMSTable="ssd4c"><OEMID>ssd4c</OEMID></Model>
+<Model Name="CLX-4190 Series" DrvName="Samsung CLX-4190 Series" CMSTable="ssy4c"><OEMID>ssy4c</OEMID></Model>
+<Model Name="CLX-92x1 93x1 Series" DrvName="Samsung CLX-92x1 93x1 Series"><OEMID>ssl1c</OEMID></Model>
+<Model Name="SCX-8123 8128 Series" DrvName="Samsung SCX-8123 8128 Series"><OEMID>ssl2m</OEMID></Model>
+<Model Name="CLX-8640 8650 Series" DrvName="Samsung CLX-8640 8650 Series"><OEMID>sse3c</OEMID></Model>
+<Model Name="ML-375x Series" DrvName="Samsung ML-375x Series" NoValuePack="TRUE"><OEMID>ssi4m</OEMID></Model>
+<Model Name="CLX-3300 Series" DrvName="Samsung CLX-3300 Series" CMSTable="sst7c"><OEMID>sst7c</OEMID></Model>
+<Model Name="CLX-9252 9352 Series" DrvName="Samsung CLX-9252 9352 Series"><OEMID>ssc3c</OEMID></Model>
+<Model Name="SCX-8230 8240 Series" DrvName="Samsung SCX-8230 8240 Series"><OEMID>ssc4m</OEMID></Model>
+<Model Name="M262x 282x Series" DrvName="Samsung M262x 282x Series" CMSTable="ssk4m"><OEMID>ssk4m</OEMID></Model>
+<Model Name="M267x 287x Series" DrvName="Samsung M267x 287x Series" CMSTable="ssk4m"><OEMID>ssa6m</OEMID></Model>
+<Model Name="M332x 382x 402x Series" DrvName="Samsung M332x 382x 402x Series" CMSTable="ssi5m"><OEMID>ssi5m</OEMID></Model>
+<Model Name="M337x 387x 407x Series" DrvName="Samsung M337x 387x 407x Series" CMSTable="ssi5m"><OEMID>ssn3m</OEMID></Model>
+<Model Name="CLX-981x Series" DrvName="Samsung CLX-981x Series"><OEMID>ssl3c</OEMID></Model>
+<Model Name="CLX-982x Series" DrvName="Samsung CLX-982x Series"><OEMID>ssc5c</OEMID></Model>
+<Model Name="SCX-881x Series" DrvName="Samsung SCX-881x Series"><OEMID>ssl4m</OEMID></Model>
+<Model Name="SCX-882x Series" DrvName="Samsung SCX-882x Series"><OEMID>ssc6m</OEMID></Model>
+<Model Name="K2200 Series" DrvName="Samsung K2200 Series" CMSTable="ssa5m"><OEMID>ssa5m</OEMID></Model>
+<Model Name="SCX-470x Series" DrvName="Samsung SCX-470x Series" CMSTable="ssa3m" NoValuePack="TRUE"><OEMID>ssa4m</OEMID></Model>
+<Model Name="SCX-4x26 Series" DrvName="Samsung SCX-4x26 Series" NoValuePack="TRUE"><OEMID>spdi1</OEMID></Model>
+<Model Name="SCX-681x Series" DrvName="Samsung SCX-681x Series" NoValuePack="TRUE"><OEMID>spdi2</OEMID></Model>
+<Model Name="C460 Series" DrvName="Samsung C460 Series" CMSTable="sst7c"><OEMID>sst9c</OEMID></Model>
+<Model Name="M4370 5370 Series" DrvName="Samsung M4370 5370 Series"><OEMID>ssu5m</OEMID></Model>
+<Model Name="C4820 Series" DrvName="Samsung C4820 Series"><OEMID>sse4c</OEMID></Model>
+<Model Name="X4300 Series" DrvName="Samsung X4300 Series"><OEMID>ssl6c</OEMID></Model>
+<Model Name="K4350 Series" DrvName="Samsung K4350 Series"><OEMID>ssl7m</OEMID></Model>
+<Model Name="M458x Series" DrvName="Samsung M458x Series"><OEMID>ssu6m</OEMID></Model>
+<Model Name="C1810 Series" DrvName="Samsung C1810 Series" CMSTable="ssd5c"><OEMID>ssd5c</OEMID></Model>
+<Model Name="C1860 Series" DrvName="Samsung C1860 Series" CMSTable="ssy5c"><OEMID>ssy5c</OEMID></Model>
+<Model Name="M283x Series" DrvName="Samsung M283x Series" CMSTable="ssk5m"><OEMID>ssk5m</OEMID></Model>
+<Model Name="M288x Series" DrvName="Samsung M288x Series" CMSTable="ssk5m"><OEMID>ssa7m</OEMID></Model>
+<Model Name="C2620 Series" DrvName="Samsung C2620 Series" CMSTable="ssd6c"><OEMID>ssd6c</OEMID></Model>
+<Model Name="C2670 Series" DrvName="Samsung C2670 Series" CMSTable="ssy6c"><OEMID>ssy6c</OEMID></Model>
+<Model Name="K7600 Series" DrvName="Samsung K7600 Series"><OEMID>ssc5m</OEMID></Model>
+<Model Name="X7600 Series" DrvName="Samsung X7600 Series"><OEMID>ssc4c</OEMID></Model>
+<Model Name="C140x Series" DrvName="Samsung C140x Series" CMSTable="ssd7c"><OEMID>ssd7c</OEMID></Model>
+<Model Name="C145x Series" DrvName="Samsung C145x Series" CMSTable="ssy7c"><OEMID>ssy7c</OEMID></Model>
+<Model Name="C470 Series" DrvName="Samsung C470 Series" CMSTable="sst7c"><OEMID>sst11c</OEMID></Model>
+<Model Name="M5270 Series" DrvName="Samsung M5270 Series"><OEMID>ssu7m</OEMID></Model>
+<Model Name="X401 Series" DrvName="Samsung X401 Series"><OEMID>ssl7c</OEMID></Model>
+<Model Name="K401 Series" DrvName="Samsung K401 Series"><OEMID>ssl8m</OEMID></Model>
+<Model Name="M453x Series" DrvName="Samsung M453x Series"><OEMID>ssu8m</OEMID></Model>
+<Model Name="CLX-7285" DrvName="CLX-7285_7355_7455 Series PCL6" NoValuePack="TRUE"><OEMID>spdz9</OEMID></Model>
+<Model Name="CLX-7355" DrvName="CLX-7285_7355_7455 Series PCL6" NoValuePack="TRUE"><OEMID>spdz9</OEMID></Model>
+<Model Name="CLX-7455" DrvName="CLX-7285_7355_7455 Series PCL6" NoValuePack="TRUE"><OEMID>spdz9</OEMID></Model>
+<Model Name="CLP-310 Series" DrvName="Samsung CLP-310 Series" CMSTable="spd0a" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0a</OEMID></Model>
+<Model Name="CLX-3170 Series" DrvName="Samsung CLX-3170 Series" CMSTable="spd0a" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0b</OEMID></Model>
+<Model Name="ML-2010" DrvName="Samsung ML-2010 Series" CMSTable="spd0d" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0d</OEMID></Model>
+<Model Name="CLX-216x Series" DrvName="Samsung CLX-216x Series" CMSTable="spd0e" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0e</OEMID></Model>
+<Model Name="CLX-3160 Series" DrvName="Samsung CLX-3160 Series" CMSTable="spd0g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0f</OEMID></Model>
+<Model Name="CLP-300" DrvName="Samsung CLP-300 Series" CMSTable="spd0g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0g</OEMID></Model>
+<Model Name="CLP-600" DrvName="Samsung CLP-600 Series" CMSTable="spd0i" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0i</OEMID></Model>
+<Model Name="CLP-510" DrvName="Samsung CLP-510 Series" CMSTable="spd0k" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0k</OEMID></Model>
+<Model Name="CLP-500" DrvName="Samsung CLP-500 Series" CMSTable="spd0l" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0l</OEMID></Model>
+<Model Name="SCX-4500W Series" DrvName="Samsung SCX-4500W Series" CMSTable="spd0p" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0m</OEMID></Model>
+<Model Name="SCX-4500 Series" DrvName="Samsung SCX-4500 Series" CMSTable="spd0n" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0n</OEMID></Model>
+<Model Name="SCX-4300 Series" DrvName="Samsung SCX-4300 Series" CMSTable="spd0x" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0o</OEMID></Model>
+<Model Name="ML-1630W Series" DrvName="Samsung ML-1630W Series" CMSTable="spd0p" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0p</OEMID></Model>
+<Model Name="ML-1630 Series" DrvName="Samsung ML-1630 Series" CMSTable="spd0q" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0q</OEMID></Model>
+<Model Name="ML-2245 Series" DrvName="Samsung ML-2245 Series" CMSTable="spd0d" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0r</OEMID></Model>
+<Model Name="ML-2240 Series" DrvName="Samsung ML-2240 Series" CMSTable="spd0d" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0s</OEMID></Model>
+<Model Name="ML-1640 Series" DrvName="Samsung ML-1640 Series" CMSTable="spd0d" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0t</OEMID></Model>
+<Model Name="ML-2510 Series" DrvName="Samsung ML-2510 Series" CMSTable="spd0d" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0v</OEMID></Model>
+<Model Name="ML-1610" DrvName="Samsung ML-1610 Series" CMSTable="spd0w" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0w</OEMID></Model>
+<Model Name="SCX-4200 Series" DrvName="Samsung SCX-4200 Series" CMSTable="spd0x" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0x</OEMID></Model>
+<Model Name="SCX-4x21 Series" DrvName="Samsung SCX-4x21 Series" CMSTable="spd0y" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd0y</OEMID></Model>
+<Model Name="ML-1510_700" DrvName="Samsung ML-1510_700 Series" CMSTable="spd1g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1c</OEMID></Model>
+<Model Name="ML-1520" DrvName="Samsung ML-1520 Series" CMSTable="spd1g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1c</OEMID></Model>
+<Model Name="ML-1710" DrvName="Samsung ML-1710 Series" CMSTable="spd1g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1d</OEMID></Model>
+<Model Name="ML-1740" DrvName="Samsung ML-1740 Series" CMSTable="spd1g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1d</OEMID></Model>
+<Model Name="SCX-4214F" DrvName="Samsung SCX-4214F" CMSTable="spd1g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1f</OEMID></Model>
+<Model Name="SCX-4x16 Series" DrvName="Samsung SCX-4x16 Series" CMSTable="spd1g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1f</OEMID></Model>
+<Model Name="SCX-4100 Series" DrvName="Samsung SCX-4100 Series" CMSTable="spd1g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1g</OEMID></Model>
+<Model Name="MFP 560 Series" DrvName="Samsung MFP 560 Series" CMSTable="spd1g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1g</OEMID></Model>
+<Model Name="MFP 750 Series" DrvName="Samsung MFP 750 Series" CMSTable="spd1g" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1h</OEMID></Model>
+<Model Name="SF-555P" DrvName="Samsung SF-555P" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1i</OEMID></Model>
+<Model Name="CF-555P" DrvName="Samsung CF-555P" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1i</OEMID></Model>
+<Model Name="ML-1010" DrvName="Samsung ML-1000 Series" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1j</OEMID></Model>
+<Model Name="ML-1020M" DrvName="Samsung ML-1000 Series" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1j</OEMID></Model>
+<Model Name="ML-1210" DrvName="Samsung ML-1200 Series" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1j</OEMID></Model>
+<Model Name="ML-1220M" DrvName="Samsung ML-1200 Series" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1j</OEMID></Model>
+<Model Name="ML-200" DrvName="Samsung ML-200 Series" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1k</OEMID></Model>
+<Model Name="ML-210" DrvName="Samsung ML-200 Series" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1k</OEMID></Model>
+<Model Name="ML-6040" DrvName="Samsung ML-6040 Series" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1k</OEMID></Model>
+<Model Name="SF-530 Series" DrvName="Samsung SF-530 Series" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1l</OEMID></Model>
+<Model Name="CF-530 Series" DrvName="Samsung CF-530 Series" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1l</OEMID></Model>
+<Model Name="ML-4300" DrvName="Samsung ML-4300 Series" CMSTable="spd1m" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1m</OEMID></Model>
+<Model Name="ML-4500" DrvName="Samsung ML-4500 Series" CMSTable="spd1m" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1m</OEMID></Model>
+<Model Name="ML-5080" DrvName="Samsung ML-5080 Series" CMSTable="spd1m" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1n</OEMID></Model>
+<Model Name="ML-1430" DrvName="Samsung ML-1430 Series" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1o</OEMID></Model>
+<Model Name="ML-1440" DrvName="Samsung ML-1440 Series" CMSTable="spd1p" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1p</OEMID></Model>
+<Model Name="SF-6800" DrvName="Samsung SF-6800P" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1s</OEMID></Model>
+<Model Name="CF-6800" DrvName="Samsung CF-6800" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1s</OEMID></Model>
+<Model Name="Msys 5150and5200" DrvName="Samsung Msys 5150_5200" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1t</OEMID></Model>
+<Model Name="SF5800P" DrvName="Samsung SF-5800P" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1t</OEMID></Model>
+<Model Name="CF5800P" DrvName="Samsung CF-5800P" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1t</OEMID></Model>
+<Model Name="SF-5100P" DrvName="Samsung SF-5100P" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1u</OEMID></Model>
+<Model Name="CF-5100P" DrvName="Samsung CF-5100P" CMSTable="spd1t" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1u</OEMID></Model>
+<Model Name="ML-191x 252x Series" DrvName="Samsung ML-191x 252x Series" CMSTable="spd1v" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1v</OEMID></Model>
+<Model Name="ML-2525W Series" DrvName="Samsung ML-2525W Series" CMSTable="spd1w" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1w</OEMID></Model>
+<Model Name="SCX-4600 Series" DrvName="Samsung SCX-4600 Series" CMSTable="spd1x" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1x</OEMID></Model>
+<Model Name="SCX-4623 Series" DrvName="Samsung SCX-4623 Series" CMSTable="spd1x" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1y</OEMID></Model>
+<Model Name="MFP 65x Series" DrvName="Samsung MFP 65x Series" CMSTable="spd1x" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd1z</OEMID></Model>
+<Model Name="CLX-3180 Series" DrvName="Samsung CLX-3180 Series" CMSTable="spd2a" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd2a</OEMID></Model>
+<Model Name="CLP-320 Series" DrvName="Samsung CLP-320 Series" CMSTable="spd2b" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd2b</OEMID></Model>
+<Model Name="ML-1660 Series" DrvName="Samsung ML-1660 Series" CMSTable="spd2c" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd2c</OEMID></Model>
+<Model Name="SCX-3200 Series" DrvName="Samsung SCX-3200 Series" CMSTable="spd2d" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd2d</OEMID></Model>
+<Model Name="SCX-4623FW Series" DrvName="Samsung SCX-4623FW Series" CMSTable="spd2e" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd2e</OEMID></Model>
+<Model Name="ML-1865W Series" DrvName="Samsung ML-1865W Series" CMSTable="spd2f" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd2f</OEMID></Model>
+<Model Name="ML-331x Series" DrvName="Samsung ML-331x Series" CMSTable="ssi1m" NoValuePack="TRUE"><OEMID>ssi1m</OEMID></Model>
+<Model Name="ML-1860 Series" DrvName="Samsung ML-1860 Series" CMSTable="spd2h" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd2h</OEMID></Model>
+<Model Name="ML-1670 Series" DrvName="Samsung ML-1670 Series" CMSTable="spd2h" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd2i</OEMID></Model>
+<Model Name="ML-2540 Series" DrvName="Samsung ML-2540 Series" CMSTable="spd2j" CMSUpdate="TRUE" NoValuePack="TRUE"><OEMID>spd2j</OEMID></Model>
+<Model Name="ML-3300 Series" DrvName="Samsung ML-3300 Series" CMSTable="ssi1m" NoValuePack="TRUE"><OEMID>ssi3m</OEMID></Model>
+<Model Name="ML-2160 Series" DrvName="Samsung ML-2160 Series" CMSTable="ssj1m" NoValuePack="TRUE"><OEMID>ssj1m</OEMID></Model>
+<Model Name="SCX-3400 Series" DrvName="Samsung SCX-3400 Series" CMSTable="ssm1m" NoValuePack="TRUE"><OEMID>ssm1m</OEMID></Model>
+<Model Name="SF-760 Series" DrvName="Samsung SF-760 Series" CMSTable="ssm1m" NoValuePack="TRUE"><OEMID>ssm2m</OEMID></Model>
+<Model Name="CLP-360 Series" DrvName="Samsung CLP-360 Series" DemoPage="sst12c" CMSTable="sst6c"><OEMID>sst6c</OEMID></Model>
+<Model Name="SCX-4650 4x21S Series" DrvName="Samsung SCX-4650 4x21S Series" CMSTable="ssm3m"><OEMID>ssm3m</OEMID></Model>
+<Model Name="C410 Series" DrvName="Samsung C410 Series" DemoPage="sst12c" CMSTable="sst6c"><OEMID>sst8c</OEMID></Model>
+<Model Name="M2020 Series" DrvName="Samsung M2020 Series" CMSTable="ssj2m" UPDOnly="TRUE"><OEMID>ssj2m</OEMID></Model>
+<Model Name="M2070 Series" DrvName="Samsung M2070 Series" CMSTable="ssj2m"><OEMID>ssm4m</OEMID></Model>
+<Model Name="C420 Series" DrvName="Samsung C420 Series" DemoPage="sst12c" CMSTable="sst6c"><OEMID>sst10c</OEMID></Model>
+<Model Name="C268x Series" DrvName="Samsung C268x Series" UPDOnly="TRUE"><OEMID>ssy8c</OEMID></Model>
+<Model Name="M408x Series" DrvName="Samsung M408x Series" CMSTable="ssi5m" UPDOnly="TRUE"><OEMID>ssn4m</OEMID></Model>
+<Model Name="M403x Series" DrvName="Samsung M403x Series" CMSTable="ssi7m" UPDOnly="TRUE"><OEMID>ssi7m</OEMID></Model>
+<Model Name="C43x Series" DrvName="Samsung C43x Series" DemoPage="sst12c" CMSTable="sst12c" UPDOnly="TRUE"><OEMID>sst12c</OEMID></Model>
+<Model Name="C48x Series" DrvName="Samsung C48x Series" CMSTable="sst13c" UPDOnly="TRUE"><OEMID>sst13c</OEMID></Model>
+<Model Name="X3220 Series" DrvName="Samsung X3220 Series" UPDOnly="TRUE"><OEMID>ssl8c</OEMID></Model>
+<Model Name="K3250 Series" DrvName="Samsung K3250 Series" UPDOnly="TRUE"><OEMID>ssl9m</OEMID></Model>
+<Model Name="K703 Series" DrvName="Samsung K703 Series"><OEMID>ssc7m</OEMID></Model>
+<Model Name="X703 Series" DrvName="Samsung X703 Series"><OEMID>ssc6c</OEMID></Model>
+<Model Name="M301x Series" DrvName="Samsung M301x Series" CMSTable="ssk6m" UPDOnly="TRUE"><OEMID>ssk6m</OEMID></Model>
+<Model Name="M306x Series" DrvName="Samsung M306x Series" CMSTable="ssa8m" UPDOnly="TRUE"><OEMID>ssa8m</OEMID></Model>
+<Model Name="C3010 Series" DrvName="Samsung C3010 Series" CMSTable="ssd8c" UPDOnly="TRUE"><OEMID>ssd8c</OEMID></Model>
+<Model Name="C3060 Series" DrvName="Samsung C3060 Series" CMSTable="ssy9c" UPDOnly="TRUE"><OEMID>ssy9c</OEMID></Model>
+<Model Name="C351x Series" DrvName="Samsung C351x Series" CMSTable="ssd9c" UPDOnly="TRUE"><OEMID>ssd9c</OEMID></Model>
+<Model Name="C401x Series" DrvName="Samsung C401x Series" CMSTable="ssd9c" UPDOnly="TRUE"><OEMID>ssd10c</OEMID></Model>
+<Model Name="C406x Series" DrvName="Samsung C406x Series" UPDOnly="TRUE"><OEMID>ssy10c</OEMID></Model>
+<Model Name="M536x Series" DrvName="Samsung M536x Series"><OEMID>ssu9m</OEMID></Model>
+<Model Name="K302 Series" DrvName="Samsung K302 Series" UPDOnly="TRUE"><OEMID>ssl10m</OEMID></Model>
+<Model Name="M2010 Series" DrvName="Samsung M2010 Series" CMSTable="ssj2m" UPDOnly="TRUE"><OEMID>ssj3m</OEMID></Model>
+<Model Name="M2060 Series" DrvName="Samsung M2060 Series" CMSTable="ssj2m" UPDOnly="TRUE"><OEMID>ssm5m</OEMID></Model>
+<Model Name="M456x Series" DrvName="Samsung M456x Series" UPDOnly="TRUE"><OEMID>ssu10m</OEMID></Model>
+<Model Name="X4305 Series" DrvName="Samsung X4305 Series" UPDOnly="TRUE"><OEMID>ssl9c</OEMID></Model>
+<Model Name="K4355 Series" DrvName="Samsung K4355 Series" UPDOnly="TRUE"><OEMID>ssl11m</OEMID></Model>
+<Model SortName="Z1" Name="GetLatestPrinterList" />
+<Model SortName="Z2" Name="GenericPro" DrvName="Samsung Generic Pro PCL6"><OEMID>sgpp6</OEMID></Model>
+<Model SortName="Z3" Name="UnsupportedColor" DrvName="Generic Color Printer PCL6"><OEMID>spec_</OEMID></Model>
+<Model SortName="Z4" Name="UnsupportedMono" DrvName="Generic Mono Printer PCL6"><OEMID>spem_</OEMID></Model>
+</Models>

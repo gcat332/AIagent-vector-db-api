@@ -1,0 +1,2667 @@
+<?xml version="1.0"?>
+<FLOW>
+
+  <PACKAGE_INSTALL>
+  </PACKAGE_INSTALL>
+
+
+
+  <SILENT_INSTALL>
+    <IF cmd="check_option" param0="install_vc" param1="TRUE">
+      <TRUE>
+        <IF cmd="is_vc_installed" param0="INSTALL_VC" param1="VC_REDIST">
+          <FALSE>
+            <COMMAND cmd="execute_file_wait" param0="$INST_SRC_DIR$\DATA\vcredist_x86.exe" param1="/q /r:n" param2="INSTALL_VC" />
+          </FALSE>
+        </IF>
+      </TRUE>
+    </IF>
+    <COMMAND cmd="set_setup_type" param0="INSTALL" />
+    <COMMAND cmd="check_spooler" />
+    <COMMAND cmd="set_install_mode" param0="SILENT_INST" />
+    <!-- Search Component 
+		<COMMAND cmd="search_components"/>
+		-->
+		
+		
+	<COMMAND cmd="delete_file" param0="UPD_FOLDER" />
+
+    <COMMAND cmd="WRITE_ITEM_INFO" />
+    <COMMAND cmd="copy_all_files" />
+
+    <!--Install Samsung Printer Center-->
+    <COMMAND cmd="execute_file" param0="__SPC_SRC_PATH__" param1="/install /s /cimode"/>
+
+    <IF cmd="check_option" param0="install_vc" param1="TRUE">
+      <COMMAND cmd="wait_install_vc" />
+    </IF>
+    <COMMAND cmd="install" dwparam="1"/>
+    <COMMAND cmd="system_install_update" />
+
+    <!-- 
+			*
+			* Create Total Uninstaller shortcut
+			*
+		-->
+    <IF cmd="check_file" param0="$DEST_INST_DIR$\MANUAL\$MANUAL_MODEL$\$MANUAL_LANG_DIR$\__USERGUIDE_FORMAT__" >
+      <TRUE>
+        <COMMAND cmd="create_shortcut" param0="MANUAL_VIEWER_SHORTCUT" />
+        <COMMAND cmd="create_shortcut" param0="MANUAL_VIEWER_SHORTCUT_MUI" />
+        <COMMAND cmd="execute_file" param0="$INST_SRC_DIR$\bin\ViewUserGuide.exe" param1="/install /n __MFG__"/>
+      </TRUE>
+    </IF>
+
+
+    <COMMAND cmd="create_shortcut" param0="TOTAL_UNINSTALL_SHORTCUT_MUI" />
+    <COMMAND cmd="create_shortcut" param0="GDPR_SHORTCUT_MUI" />
+    <COMMAND cmd="add_reg" param0="TOTALUNINSTALLER_KEY" />
+
+    <!--	<COMMAND cmd="refresh_system" />	-->
+  </SILENT_INSTALL>
+
+
+
+  <SILENT_UNINSTALL>
+    <COMMAND cmd="set_setup_type" param0="UNINSTALL" />
+
+    <COMMAND cmd="set_install_mode" param0="SILENT_INST" />
+
+    <!-- Search Component -->
+    <COMMAND cmd="search_components"/>
+
+    <COMMAND cmd="WRITE_ITEM_INFO" />
+
+    <COMMAND cmd="uninstall" dwparam="1"/>
+    <COMMAND cmd="system_uninstall_update" />
+    <!--	<COMMAND cmd="refresh_system" />	-->
+  </SILENT_UNINSTALL>
+
+
+  <!--
+			*
+			*
+			*	cmd param0,1,2,3,4.  wparam
+			*
+			*
+-->
+
+  <!--
+			Variables
+			
+			1) VAR.INSTALL_TYPE : Installation Type
+				 
+				 - install_now
+				 - custom_install
+				 - software_only  (not used)
+				 - remote_install (not used)
+				 - custom_utility (not used)
+				 - wireless_setup
+			
+			2) VAR.CONNECTION_TYPE : Connectinon type, DON'T CHANGE the following defined string, because the strings are defined in core code.
+			   
+			   - LOCAL_QUICK_FOUND
+			   - LOCAL_CONNECTION
+			   - NETWORK_CONNECTION
+			   - WIRELESS_CONNECTION
+			   - SET_IP_CONNECTION
+			   - NO_CONNECTION
+			
+			3) VAR.BOOL.CONNECT : Printer is connected or not
+			   
+			   - TRUE
+			   - FALSE
+-->
+
+  <INSTALL>
+
+    <COMMAND cmd="set_setup_type" param0="INSTALL" />
+
+    <COMMAND cmd="start_cmd_thread" param0="FLOW_INIT"/>
+
+    <LABEL>START_STEP</LABEL>
+
+    <!-- Init variables -->
+    <COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="NOT_DEFINE"/>
+    <COMMAND cmd="set_variable" param0="VAR.BOOL.CONNECT" param1="TRUE"/>
+    <COMMAND cmd="set_variable" param0="VAR.BOOL.WEB_AGREE_DONE" param1="NOT_DEFINE"/>
+    <COMMAND cmd="set_variable" param0="VAL.CONNECTION_DIALOG" param1="NOT_DEFINE"/>
+    <COMMAND cmd="set_variable" param0="VAL.CONNECTION_DIALOG.TYPE" param1="USB"/>
+    <!-- default : USB -->
+    <COMMAND cmd="set_variable" param0="VAL.WIRELESS_AUTO" param1="TRUE"/>
+
+    <IF cmd="check_option" param0="dotnetInstall" param1="TRUE">
+      <TRUE>
+        <COMMAND cmd="add_reg" param0="DOTNET_INSTALL" />
+      </TRUE>
+    </IF>
+
+
+    <!-- Check PNP -->
+    <!--	
+		<IF cmd="is_pnp_in_progress">
+			<TRUE>
+				<COMMAND cmd="open_dlg" param0="WAIT_PNP" step_dlg="FALSE" />
+			</TRUE>
+		</IF>
+		-->
+
+
+    <!--
+			*
+			*
+			*	Main Screen
+			*
+			*
+		-->
+
+
+    <LABEL>START</LABEL>
+
+
+    <!-- Set History Panle -->
+    <IF cmd="check_option" param0="wia" param1="TRUE" >
+      <TRUE>
+        <COMMAND cmd="set_history" param0="HISTORY_PANEL_INSTALL"/>
+      </TRUE>
+      <FALSE>
+        <COMMAND cmd="set_history" param0="HISTORY_PANEL_INSTALL_SU"/>
+      </FALSE>
+    </IF>
+
+	<IF cmd="check_gdpr">
+			<TRUE>
+			<!--
+					*
+					*
+					*	License Agreement and Data Collection Dialog
+					*
+					*
+				-->
+				<IF cmd="check_gdpr_driver_list">
+					<TRUE>
+						<COMMAND cmd="open_dlg" param0="GDPR_DRIVER_LIST_DIALOG" step_dlg="TRUE" />
+						<COMMAND cmd="open_dlg" param0="LICENSE_DATA_COLLECTION_SHORTCUT" step_dlg="TRUE" />
+					</TRUE>					
+					<FALSE><COMMAND cmd="open_dlg" param0="LICENSE_DATA_COLLECTION_SHORTCUT" step_dlg="TRUE" /></FALSE>
+				</IF>
+			</TRUE>
+			<FALSE>
+
+
+
+
+
+    			<!--
+			*
+			*
+			*	Welcome
+			*
+			*
+			-->
+
+
+			    <COMMAND cmd="set_history_section" param0="WELCOME" step_dlg="TRUE"/>
+
+			    <IF cmd="check_option" param0="internet_usage" param1="FALSE">
+			      <TRUE>
+			        <COMMAND cmd="open_dlg" param0="MAIN_WELCOME_NO_AMPV" step_dlg="TRUE"/>
+			      </TRUE>
+			      <FALSE>
+			        <COMMAND cmd="open_dlg" param0="MAIN_WELCOME" step_dlg="TRUE"/>
+			      </FALSE>
+			    </IF>
+			</FALSE>
+	</IF>
+		<!--
+			*
+			*
+			*	License Agreement and Data Collection Dialog
+			*
+			*
+		-->
+		
+    <COMMAND cmd="open_dlg" param0="LICENSE_DATA_COLLECTION" step_dlg="TRUE" />
+
+    <!-- History Panel Section Setting -->
+    <COMMAND cmd="set_history_section" param0="FIND_PRINTER" step_dlg="TRUE"/>
+
+    <IF cmd="is_ampv_collection_off">
+      <FALSE>
+        <COMMAND cmd="start_check_updates_thread"/>
+      </FALSE>
+    </IF>
+
+
+    <!--
+		*
+		*
+		* Select Setup type
+		*
+		*
+		*		
+	-->
+
+
+    <SWITCH cmd="open_dlg" param0="SELECT_SETUP_TYPE" step_dlg="TRUE">
+
+      <CASE value="0">
+        <GOTO>SELECT_CONNECT_TYPE</GOTO>
+      </CASE>
+
+      <CASE value="1">
+        <GOTO>SEARCH_ALL</GOTO>
+      </CASE>
+
+      <CASE value="2">
+        <GOTO>NO_CONNECTION</GOTO>
+      </CASE>
+
+      <DEFAULT>
+        <GOTO>SELECT_CONNECT_TYPE</GOTO>
+      </DEFAULT>
+
+    </SWITCH>
+
+
+
+    <!-- 
+			*
+			*
+			* Select Connection Type
+			*
+			*
+		-->
+			
+    <LABEL>SELECT_CONNECT_TYPE</LABEL>
+
+    <COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1=""/>
+
+    <IF cmd="check_option" param0="default_connect_usb" param1="FALSE">
+      <TRUE>
+        <COMMAND cmd="set_variable" param0="VAL.CONNECTION_DIALOG.TYPE" param1="NETWORK"/>
+      </TRUE>
+    </IF>
+
+    <SWITCH cmd="open_dlg" param0="SELECT_CONNECTION_EX" param1="#VAL.CONNECTION_DIALOG.TYPE#" step_dlg="TRUE">
+
+      <!-- LOCAL -->
+      <CASE value="0">
+        <COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="LOCAL_CONNECTION"/>
+        <COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="usb"/>
+        <GOTO>LOCAL_CONNECTION</GOTO>
+      </CASE>
+
+      <!-- Network -->
+      <CASE value="1">
+        <COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="NETWORK_CONNECTION"/>
+        <COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="Network"/>
+        <GOTO>NETWORK_CONNECTION</GOTO>
+      </CASE>
+
+      <!-- Wireless -->
+      <CASE value="2">
+        <COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="WIRELESS_CONNECTION"/>
+        <COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="Wireless"/>
+        <GOTO>WIRELESS_CONNECTION</GOTO>
+      </CASE>
+
+      <!-- Not Connected -->
+      <DEFAULT>
+        <COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="NO_CONNECTION"/>
+      </DEFAULT>
+
+    </SWITCH>
+
+    <GOTO>NO_CONNECTION</GOTO>
+
+
+    <!-- 
+			*
+			*
+			*	Local Connection
+			*
+			*
+		 -->
+    <LABEL>LOCAL_CONNECTION</LABEL>
+
+    <IF cmd="find_local_printer" param0="SET_PORT">
+      <FALSE>
+        <COMMAND cmd="open_dlg" param0="GUIDE_USB" step_dlg="FALSE"/>
+      </FALSE>
+    </IF>
+
+    <!--<GOTO>SELECT_SOFTWARE_STEP</GOTO>-->
+   
+    <GOTO>SEARCH_NETWORK</GOTO>
+
+    <!-- 
+			*
+			*
+			*	Search All
+			*
+			*
+			-->
+
+    <!-- Existing Search All-->
+    <LABEL>SEARCH_ALL</LABEL>
+    <COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="All"/>
+    <SWITCH cmd="open_dlg" param0="FOUND_MODEL_LIST" param1="All" step_dlg="TRUE">
+
+      <!-- Search Again (Network)-->
+      <CASE value="11">
+        <COMMAND cmd="OPEN_DLG" param0="FIREWALL_NOTICE" step_dlg="FALSE"/>
+        <GOTO>SEARCH_ALL</GOTO>
+      </CASE>
+
+      <!-- Not found -->
+      <CASE value="0">
+        <GOTO>NOT_FOUND_STEP</GOTO>
+      </CASE>
+
+      <!-- Direct Input -->
+      <CASE value="12">
+        <GOTO>DIRECT_INPUT_STEP</GOTO>
+      </CASE>
+
+    </SWITCH>
+
+
+    <!-- <GOTO>SELECT_SOFTWARE_STEP</GOTO> -->
+   
+   <!-- <GOTO>SEARCH_NETWORK</GOTO> -->
+<GOTO>SET_PRINTER_SETTING_STEP</GOTO>
+
+    <!-- 
+			*
+			*
+			*	Network Connection
+			*
+			*
+		 -->
+    <LABEL>NETWORK_CONNECTION</LABEL>
+
+    <SWITCH cmd="open_dlg" param0="SELECT_SETUP_TYPE_NETWORK" step_dlg="TRUE">
+       <!--Yes--> 
+      <CASE value="0">
+        <IF cmd="open_dlg" param0="GUIDE_NETWORK" step_dlg="TRUE">
+          <TRUE>
+             <!--Check Set IP--> 
+            <COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="SET_IP_CONNECTION"/>
+            <GOTO>SET_IP_CONNECTION</GOTO>
+          </TRUE>
+          <FALSE>
+            <COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="NETWORK"/>
+          </FALSE>
+        </IF>
+      </CASE>
+      <CASE value="1">
+        <COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="NETWORK"/>
+      </CASE>
+    </SWITCH>
+
+   <LABEL>SEARCH_NETWORK</LABEL>
+    <!-- 
+			*
+			*
+			* Select Printer
+			*
+			*
+			-->
+
+    <LABEL>PRINTER_FOUND_STEP</LABEL>
+
+    <IF cmd="check_variable" param0="VAL.CONNECTION_DIALOG.TYPE" param1="NOT_DEFINE">
+      <TRUE>
+        <COMMAND cmd="set_variable" param0="VAL.CONNECTION_DIALOG.TYPE" param1="Network"/>
+      </TRUE>
+    </IF>
+
+    <SWITCH cmd="open_dlg" param0="FOUND_MODEL_LIST" param1="#VAL.SEACHING.PARAM#" step_dlg="TRUE">
+
+      <!-- Search Again (Network)-->
+      <CASE value="11">
+
+        <COMMAND cmd="OPEN_DLG" param0="FIREWALL_NOTICE" step_dlg="FALSE"/>
+
+        <IF cmd="check_variable" param0="VAL.CONNECTION_TYPE" param1="ALL">
+          <TRUE>
+            <GOTO>SEARCH_ALL</GOTO>
+          </TRUE>
+          <FALSE>
+            <GOTO>SEARCH_NETWORK</GOTO>
+          </FALSE>
+        </IF>
+
+      </CASE>
+
+
+      <!-- Direct Input -->
+      <CASE value="12">
+        <GOTO>DIRECT_INPUT_STEP</GOTO>
+      </CASE>
+
+
+      <!-- Select Another Printer -->
+      <CASE value="13">
+        <GOTO>SELECT_CONNECT_TYPE</GOTO>
+      </CASE>
+    </SWITCH>
+	
+	<!--<GOTO>SELECT_SOFTWARE_STEP</GOTO>-->
+    <GOTO>SET_PRINTER_SETTING_STEP</GOTO>
+
+    <!-- 
+			*
+			*
+			*	Direct Input
+			*
+			*
+			-->
+    <GOTO>DIRECT_INPUT_STEP_END</GOTO>
+
+    <LABEL>DIRECT_INPUT_STEP</LABEL>
+    <SWITCH cmd="OPEN_DLG" param0="MANUAL_SEARCH_MODEL" param1="MAIN" step_dlg="FALSE">
+
+      <!-- Range Search -->
+      <CASE value="100">
+		<COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="NETWORK"/>
+        <GOTO>SEARCH_NETWORK</GOTO>
+      </CASE>
+
+     
+      <!-- Printer Found -->
+      <DEFAULT>
+        <COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="DIRECT_INPUT"/>
+        <GOTO>PRINTER_FOUND_STEP</GOTO>
+      </DEFAULT>
+
+    </SWITCH>
+
+    <LABEL>DIRECT_INPUT_STEP_END</LABEL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 
+			*
+			*
+			*	Wireless Connection
+			*
+			*
+		 -->
+    <LABEL>WIRELESS_CONNECTION</LABEL>
+<!--
+    <SWITCH cmd="open_dlg" param0="SELECT_SETUP_TYPE_WIRELESS" step_dlg="TRUE">    
+      <CASE value="1">
+        <COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="Network"/>
+        <COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="WIRELESS_CONNECTION"/>
+        <GOTO>SEARCH_WIRELESS</GOTO>
+      </CASE>
+    </SWITCH>
+-->
+
+
+
+    <COMMAND cmd="wsp_initialize" />
+
+    <COMMAND cmd="set_variable" param0="VAL.WIRELESS_METHOD" param1="NO"/>
+    <COMMAND cmd="set_variable" param0="VAL.CONNECTING_PARAM" param1="WSP_CONNECT"/>
+    <COMMAND cmd="set_variable" param0="VAL.WLAN_AVAILABLE" param1="NOT_DEFINE"/>
+
+
+
+
+
+    <!--       
+		================================================================
+		Searching wireless printer -> If no printer, select wireless setting method : USB or wi-fi
+		================================================================
+		-->
+
+    <LABEL>SELECT_WIRELESS_SETTING_METHOD</LABEL>
+
+    <IF cmd="check_option" param0="wws" param1="FALSE">
+      <TRUE>
+        <GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+      </TRUE>
+      <FALSE>
+
+        <IF cmd="wsp_is_wlan_available" >
+          <TRUE>
+            <COMMAND cmd="set_variable" param0="VAL.WLAN_AVAILABLE" param1="WLAN_SUPPORT"/>
+			<COMMAND cmd="open_dlg" param0="WSP_GUIDE_PRINTER_TURN_ON" />
+			<GOTO>WIRELESS_WIRELESS_WIFI_SETUP</GOTO>
+          </TRUE>
+		  
+          <FALSE>
+			<COMMAND cmd="set_variable" param0="VAL.WLAN_AVAILABLE" param1="WLAN_NOT_SUPPORT"/>
+			<GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+          </FALSE>
+        </IF>
+		
+		
+
+		<!--
+        <SWITCH cmd="open_dlg" param0="WSP_SELECT_WIRELESS_SETTING_METHOD" param1="#VAL.WLAN_AVAILABLE#" step_dlg="TRUE">
+          <CASE value="0">
+            <COMMAND cmd="open_dlg" param0="WSP_GUIDE_PRINTER_TURN_ON" />
+            <GOTO>WIRELESS_WIRELESS_WIFI_SETUP</GOTO>
+          </CASE>
+          <CASE value="1">
+            <GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+          </CASE>
+        </SWITCH>
+		-->
+      </FALSE>
+    </IF>
+
+    <!--       
+		================================================================
+		Connect Printer Soft AP with Found SSID and the Network Key
+		================================================================
+		-->
+    <LABEL>WIRELESS_WIRELESS_WIFI_SETUP</LABEL>
+	
+    <COMMAND cmd="download_installer_configure_file" />
+
+    <COMMAND cmd="set_variable" param0="VAL.WIRELESS_METHOD" param1="YES"/>
+
+    <COMMAND cmd="wsp_turnoff_networkwindow" />
+
+
+    <LABEL>WIRELESS_WIRELESS_DEVICE_CHECKING</LABEL>
+    <COMMAND cmd="set_variable" param0="VAL.IGNORE_SSID" param1="FALSE"/>
+    <COMMAND cmd="set_variable" param0="VAL.IGNORE_NETWORK_KEY" param1="FALSE"/>
+	<COMMAND cmd="set_variable" param0="VAL.WIRELESS_SETTING_METHOD" param1=""/>
+
+    <SWITCH cmd="OPEN_DLG" param0="WSP_DEVICE_CHECKING_NETWORK" param1="WSP_CHECK_NETWORK">
+	<!-- Search again softap-->
+      <CASE value="114">
+        <GOTO>WIRELESS_WIRELESS_DEVICE_CHECKING</GOTO>
+      </CASE>
+	  
+      <!-- WSP_ERROR_INVALID_PROFILE 
+				: Success to retrieve Wireless Data from the connected printer but PC profile is not available -->
+      <CASE value="202">
+        <COMMAND cmd="set_variable" param0="VAL.WIRELESS_SETTING_METHOD" param1="WIFI"/>
+      </CASE>
+
+      <!-- WSP_CURRENT_SET_PROFILE 
+				: Success to retrieve Wireless Data from the connected printer and PC profile is available -->
+      <CASE value="201">
+        <COMMAND cmd="set_variable" param0="VAL.IGNORE_SSID" param1="TRUE"/>
+        <COMMAND cmd="set_variable" param0="VAL.IGNORE_NETWORK_KEY" param1="TRUE"/>
+      </CASE>
+
+      <!-- WSP_ONLY_PASSWORD_NEEDED 
+				: Success to retrieve Wireless Data from the connected printer and only SSID is available -->
+      <CASE value="203">
+        <COMMAND cmd="set_variable" param0="VAL.IGNORE_SSID" param1="TRUE"/>
+      </CASE>
+
+
+      <!-- Wireless setting error : Go to wireless setting through USB connection-->
+      <CASE value="122">
+        <GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+      </CASE>
+
+      <DEFAULT>
+        <!-- WSP_ERROR_SOFTAP_NOT_FOUND : 110 -->
+        <GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+      </DEFAULT>
+    </SWITCH>
+
+    <!--
+		
+			Open WSP Confirm Dialog
+		
+		-->
+
+    <SWITCH cmd="wsp_is_confirm_needed">
+      <CASE value="1">
+        <!-- PBC -->
+        <LABEL>WSP_CI3_PUSH_WPS_STEP</LABEL>
+        <SWITCH cmd="OPEN_DLG" param0="WSP_PUSH_WPS" >
+          <CASE value="3">
+            <!-- Time Out -->
+            <SWITCH cmd="OPEN_DLG" param0="WSP_PUSH_WPS_RETRY" >
+              <CASE value="100">
+                <!-- Retry -->
+                <GOTO>WSP_CI3_PUSH_WPS_STEP</GOTO>
+              </CASE>
+            </SWITCH>
+          </CASE>
+
+          <CASE value="1">
+            <!-- not started -->
+            <GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+          </CASE>
+
+          <CASE value="2">
+            <!-- not started -->
+            <GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+          </CASE>
+        </SWITCH>
+      </CASE>
+
+      <CASE value="2">
+        <!-- GUI -->
+        <!-- <GOTO>WSP_CI3_WIRELESS_CONNECTING_STEP</GOTO> -->
+        <LABEL>WSP_CI3_PUSH_WPS_GUI_STEP</LABEL>
+        <SWITCH cmd="OPEN_DLG" param0="WSP_PUSH_WPS_GUI" >
+          <CASE value="3">
+            <!-- Time Out -->
+            <SWITCH cmd="OPEN_DLG" param0="WSP_PUSH_WPS_RETRY_GUI" >
+              <CASE value="100">
+                <!-- Retry -->
+                <GOTO>WSP_CI3_PUSH_WPS_GUI_STEP</GOTO>
+              </CASE>
+            </SWITCH>
+          </CASE>
+
+          <CASE value="1">
+            <!-- not started -->
+            <GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+          </CASE>
+
+          <CASE value="2">
+            <!-- not started -->
+            <GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+          </CASE>
+        </SWITCH>
+      </CASE>
+
+      <DEFAULT>
+      </DEFAULT>
+    </SWITCH>
+
+    <!--
+		
+			Open Disconnect Wired cable Dialog
+		
+		-->
+    <IF cmd="wsp_is_wired_connected">
+      <TRUE>
+        <COMMAND cmd="OPEN_DLG" param0="WSP_DISCONNECT_WIRED_NETWORK" />
+      </TRUE>
+    </IF>
+
+
+    <!--
+		
+			Open Select SSID Dialog
+		
+		-->
+    <IF cmd="check_variable" param0="VAL.IGNORE_SSID" param1="FALSE">
+      <TRUE>
+        <SWITCH cmd="open_dlg" param0="WSP_FOUND_MODEL" step_dlg="TRUE">
+
+          <!--  200 : Advanced Setting -->
+          <CASE value="200">
+			<IF cmd="wsp_check_capability" param0="wpa_mixed">
+				<TRUE>  <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WPA_MIXED"/> </TRUE>
+				<FALSE> <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WIFI"/> </FALSE>
+			</IF>
+            <GOTO>WSP_CI3_WIRELESS_CONFIRM_STEP</GOTO>
+          </CASE>
+
+          <!--  103 : Set Security Key -->
+          <CASE value="103">
+            <IF cmd="check_variable" param0="VAL.IGNORE_NETWORK_KEY" param1="FALSE">
+              <TRUE>
+                <COMMAND cmd="open_dlg" param0="WSP_SECURITY_KEY" step_dlg="TRUE"/>
+              </TRUE>
+            </IF>
+          </CASE>
+        </SWITCH>
+      </TRUE>
+    </IF>
+
+    <GOTO>WSP_CI3_WIRELESS_CONNECTING_STEP</GOTO>
+
+
+
+
+
+
+
+
+
+
+
+    <!--       
+		================================================================
+		Connect Printer through USB
+		================================================================
+		-->
+    <LABEL>WIRELESS_USB_WIFI_SETUP</LABEL>
+    <COMMAND cmd="set_variable" param0="VAL.WIRELESS_METHOD" param1="NO"/>
+	<COMMAND cmd="set_variable" param0="VAL.WIRELESS_SETTING_METHOD" param1="USB"/>
+
+	<COMMAND cmd="OPEN_DLG" param0="WSP_CONNECT_DEVICE" step_dlg="TRUE" />
+<!--
+    <IF cmd="wsp_find_printer" >
+      <FALSE>
+        <COMMAND cmd="OPEN_DLG" param0="WSP_CONNECT_DEVICE" />
+      </FALSE>
+    </IF>
+-->
+
+
+    <!--       
+		================================================================
+		Load Current Device Settings and Wireless Network List       
+		================================================================
+		-->
+    <LABEL>WIRELESS_CI3_CHECKING_DEVICE</LABEL>
+
+    <SWITCH cmd="OPEN_DLG" param0="WSP_DEVICE_CHECKING" param1="WSP_CHECK">
+
+      <!--  ERROR_DEVICE_DATA -->
+      <CASE value="101">
+
+        <SWITCH cmd="OPEN_DLG" param0="WSP_CHECKING_ERROR_DEVICE_DATA">
+
+          <!-- Retry	-->
+          <CASE value="11">
+            <GOTO>WIRELESS_USB_WIFI_SETUP </GOTO>
+          </CASE>
+
+          <!-- go to select connection -->
+          <DEFAULT>
+            <GOTO>SELECT_CONNECT_TYPE</GOTO>
+          </DEFAULT>
+
+        </SWITCH>
+
+      </CASE>
+
+      <!--  ERROR_WLAN_SUPPORT -->
+      <CASE value="102">
+        <COMMAND cmd="OPEN_DLG" param0="WSP_CHECKING_ERROR_WLAN_SUPPORT" />
+        <GOTO>SELECT_CONNECT_TYPE</GOTO>
+      </CASE>
+
+      <!--  WSP_ERROR_CONNECTED_WIRED -->
+      <CASE value="107">
+        <COMMAND cmd="OPEN_DLG" param0="WSP_DISCONNECT_WIRED_NETWORK" />
+        <IF cmd="wsp_find_printer">
+          <FALSE>
+            <COMMAND cmd="OPEN_DLG" param0="WSP_CONNECT_DEVICE" />
+          </FALSE>
+        </IF>
+      </CASE>
+
+    </SWITCH>
+
+
+
+
+    <!-- 
+		============================================================================================ 
+				Show Wireless Network List 
+		============================================================================================
+		-->
+    <COMMAND cmd="set_variable" param0="VAL.WIRELESS_SETTING_METHOD" param1="USB"/>
+	
+
+    <LABEL>WSP_CI3_FOUND_MODEL_STEP</LABEL>
+	
+	<COMMAND cmd="set_variable" param0="VAL.IS_ADVANCED_SETTING" param1="NORMAL"/>
+
+    <SWITCH cmd="open_dlg" param0="WSP_FOUND_MODEL" step_dlg="TRUE">
+
+      <!--  200 : Advanced Setting -->
+      <CASE value="200">
+        <IF cmd="check_variable" param0="VAL.WIRELESS_SETTING_METHOD" param1="WIFI" >
+          <TRUE>
+			<IF cmd="wsp_check_capability" param0="wpa_mixed">
+				<TRUE>  <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WPA_MIXED"/> </TRUE>
+				<FALSE> <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WIFI"/> </FALSE>
+			</IF>
+          </TRUE>
+          <FALSE>
+            <IF cmd="wsp_is_support_adhoc">
+              <TRUE>
+                <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING"/>
+              </TRUE>
+              <FALSE>
+                <IF cmd="wsp_check_capability" param0="wpa_mixed">
+					<TRUE>  <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WPA_MIXED"/> </TRUE>
+					<FALSE> <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WIFI"/> </FALSE>
+				</IF>
+              </FALSE>
+              <!-- GUI -->
+            </IF>
+          </FALSE>
+        </IF>
+		<COMMAND cmd="set_variable" param0="VAL.IS_ADVANCED_SETTING" param1="ADVANCED"/>
+      </CASE>
+
+      <!--  103 : Set Security Key -->
+      <CASE value="103">
+        <COMMAND cmd="open_dlg" param0="WSP_SECURITY_KEY" step_dlg="TRUE"/>
+        <GOTO>WSP_CI3_WIRELESS_CONNECTING_STEP</GOTO>
+      </CASE>
+
+    </SWITCH>
+
+
+
+
+
+    <!-- 
+		========================================================================================= 
+				Setting Confirm Dialog
+		=========================================================================================					
+		-->
+    <LABEL>WSP_CI3_WIRELESS_CONFIRM_STEP</LABEL>
+    <SWITCH cmd="open_dlg" param0="WSP_SETTING_CONFIRM" param1="WSP_CONFIRM" step_dlg="TRUE">
+      <CASE value="300">
+        <!--  300 : Change Network -->
+        <COMMAND cmd="open_dlg" param0="WSP_SET_NET_PROTOCOL" />
+        <GOTO>WSP_CI3_WIRELESS_CONFIRM_STEP</GOTO>
+      </CASE>
+    </SWITCH>
+	
+	<GOTO>WSP_CI3_WIRELESS_CONNECTING_STEP</GOTO>
+
+
+
+    <!-- 
+		========================================================================================= 
+				Connecting Dialog
+		=========================================================================================					
+		-->
+
+
+    <LABEL>WSP_CI3_WIRELESS_CONNECTING_STEP</LABEL>
+
+
+    <IF cmd="check_variable" param0="VAL.WIRELESS_SETTING_METHOD" param1="USB" >
+      <TRUE>
+        <IF cmd="wsp_find_printer">
+          <FALSE>
+            <COMMAND cmd="OPEN_DLG" param0="WSP_CONNECT_DEVICE" />
+          </FALSE>
+        </IF>
+      </TRUE>
+    </IF>
+
+
+    <LABEL>WSP_CI3_WIRELESS_WIFI_CONNECTING_STEP</LABEL>
+	
+	<COMMAND cmd="set_variable" param0="VAL.CONNECTING_PARAM" param1="WSP_CONNECT"/>
+
+    <IF cmd="check_variable" param0="VAL.WIRELESS_METHOD" param1="YES">
+      <TRUE>
+        <COMMAND cmd="set_variable" param0="VAL.CONNECTING_PARAM" param1="WSP_CONNECT_NETWORK"/>
+      </TRUE>
+      <FALSE> <!-- USB -->
+	  
+		 <!-- If General Error occurred and not support ATOP2P and Wi-Fi Direct is ON, it is set OFF -->
+		<IF  cmd="check_variable" param0="VAR.INT.FAIL_NUM" param1="6">
+			<TRUE>
+				<IF cmd="wsp_is_wifi_direct">
+					<FALSE><COMMAND cmd="set_variable" param0="VAL.CONNECTING_PARAM" param1="WSP_CONNECT_WFD_OFF"/> </FALSE>
+				</IF>
+			</TRUE>
+		</IF>
+      </FALSE>
+    </IF>
+
+	<COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1=""/>
+	
+    <SWITCH cmd="open_dlg" param0="WSP_WIRELESS_CONNECTING" param1="#VAL.CONNECTING_PARAM#">
+      <!--  101 : WSP_ERROR_DEVICE_DATA WSP_CHECKING_ERROR_DEVICE_DATA -->
+      <CASE value="101">
+        <COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="1"/>
+      </CASE>
+
+      <!--  104 : WSP_ERROR_SSID -->
+      <CASE value="104">
+        <COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1=""/>
+      </CASE>
+
+      <!--  105 : WSP_ERROR_SECURITY -->
+      <CASE value="105">
+        <COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="3"/>
+      </CASE>
+
+      <!--  106 : WSP_ERROR_PC_CONNECTION_ERROR -->
+      <CASE value="106">
+        <COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="2"/>
+      </CASE>
+
+      <!--  107 : WSP_ERROR_CONNECTED_WIRED -->
+      <CASE value="107">
+        <COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="4"/>
+      </CASE>
+
+      <!--  108 : WSP_ERROR_IP_NOT_ALLOCATED -->
+      <CASE value="108">
+        <COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="5"/>
+      </CASE>
+
+      <!--  109 : WSP_ERROR_GENERAL_WIRELESS -->
+      <CASE value="109">
+        <COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="6"/>
+      </CASE>
+
+
+      <!-- Success -->
+      <CASE value="0">
+        <GOTO>WIRELESS_SETTING_SUCCESS</GOTO>
+      </CASE>
+
+      <!--  109 : WSP_ERROR_GENERAL_WIRELESS -->
+      <DEFAULT>
+        <COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="6"/>
+      </DEFAULT>
+
+    </SWITCH>
+	
+	<IF cmd="check_variable" param0="VAL.WIRELESS_METHOD" param1="YES">
+      <TRUE>  <GOTO>WIRELESS_USB_WIFI_SETUP</GOTO> </TRUE>
+	  <FALSE>  
+		<COMMAND cmd="open_dlg" param0="WSP_CONNECTING_FAILURE#VAR.INT.FAIL_NUM#" /> 
+		<GOTO>WSP_CI3_WIRELESS_CONNECTING_STEP</GOTO>
+	  </FALSE>
+	 </IF>
+
+
+    <!-- 
+		===================================================================
+		Wireless Setting Completed
+		===================================================================
+		-->
+    <LABEL>WIRELESS_SETTING_SUCCESS</LABEL>
+
+    <IF cmd="check_variable" param0="VAL.WIRELESS_METHOD" param1="YES">
+      <TRUE>
+        <!--
+				Wireless Wi-Fi Setup Completed
+			-->
+        <!--	<COMMAND cmd="open_dlg" param0="WSP_SETTING_COMPLETE_WIRELESS"/> -->
+        <COMMAND cmd="open_dlg" param0="WSP_SETTING_COMPLETE_WIRELESS_WITH_INFO"/>
+      </TRUE>
+
+      <FALSE>
+        <!--
+				USB Completed
+			-->
+			
+		<!-- If wi-fi direct is OFF, show setting dialog-->
+		<!--
+		<IF cmd="check_variable" param0="VAL.CONNECTING_PARAM" param1="WSP_CONNECT_WFD_OFF">
+			<FALSE>				
+				<IF cmd="wsp_is_wifi_direct">
+				  <TRUE>
+					<COMMAND cmd="open_dlg" param0="WSP_WIFI_DIRECT"/>
+				  </TRUE>
+				</IF>
+			</FALSE>
+		</IF>
+		-->
+
+		<COMMAND cmd="open_dlg" param0="WSP_SETTING_COMPLETE_WIRELESS_WITH_INFO"/>
+        <COMMAND cmd="open_dlg" param0="WSP_SETTING_COMPLETE"/>
+        <!--	<COMMAND cmd="open_dlg" param0="WSP_SETTING_COMPLETE_WIRELESS_WITH_INFO"/> -->
+
+      </FALSE>
+    </IF>
+
+
+
+
+
+    <!--<GOTO>SELECT_SOFTWARE_STEP</GOTO>-->
+    <GOTO>SET_PRINTER_SETTING_STEP</GOTO>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 
+			*
+			*
+			*	Set IP Address
+			*
+			*
+		 -->
+    <LABEL>SET_IP_CONNECTION</LABEL>
+
+    <SWITCH cmd="OPEN_DLG" param0="SEARCHING" param1="SETIP">
+
+      <!-- Not found -->
+      <CASE value="0">
+
+        <!-- Show Not found dialog -->
+        <COMMAND cmd="open_dlg" param0="MODEL_NOT_FOUND_SETIP" step_dlg="FALSE"/>
+
+        <!-- Show Firewall Notice -->
+        <COMMAND cmd="OPEN_DLG" param0="FIREWALL_NOTICE" step_dlg="FALSE" />
+
+        <GOTO>SET_IP_CONNECTION</GOTO>
+
+      </CASE>
+
+      <!-- found -->
+      <DEFAULT>
+
+        <!-- Set IP Dialog -->
+        <SWITCH cmd="OPEN_DLG" param0="SETIP_DLG" step_dlg="TRUE">
+
+          <!-- Search Again-->
+          <CASE value="11">
+
+            <!-- Show Firewall Notice -->
+            <COMMAND cmd="OPEN_DLG" param0="FIREWALL_NOTICE" step_dlg="FALSE" />
+
+            <GOTO>SET_IP_CONNECTION</GOTO>
+
+          </CASE>
+
+          <!-- Found-->
+          <DEFAULT value="1">
+            <!--<GOTO>SELECT_SOFTWARE_STEP</GOTO>-->
+            <GOTO>SET_PRINTER_SETTING_STEP</GOTO>
+          </DEFAULT>
+
+        </SWITCH>
+
+      </DEFAULT>
+
+    </SWITCH>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 
+			*
+			*
+			*	No Connection
+			*
+			*
+		 -->
+    <LABEL>NO_CONNECTION</LABEL>
+    <!--<GOTO>SELECT_SOFTWARE_STEP</GOTO>-->
+    <GOTO>SET_PRINTER_SETTING_STEP</GOTO>
+    
+
+
+
+
+
+
+
+    <!-- 
+			*
+			*
+			* Select Software
+			*
+			*
+			-->
+
+    <!--<LABEL>SELECT_SOFTWARE_STEP</LABEL>-->
+	
+		
+	
+    <!--<COMMAND cmd="wsp_restore_turnoff_networkwindow" />-->
+
+    <!-- History Panel Section Setting -->
+    <!--<COMMAND cmd="set_history_section" param0="SELECT_FEATURES" step_dlg="TRUE"/>
+
+    <IF cmd="check_option" param0="upload_ampv" param1="TRUE">
+      <TRUE>
+        <IF cmd="is_ampv_collection_off">
+          <TRUE>
+            <COMMAND cmd="open_dlg" param0="CHECK_UPDATES_DLG" step_dlg="FALSE"/>
+
+            <IF cmd="open_dlg" param0="SELECT_SW_AMPV_UPLOAD" param1="INSTALL" step_dlg="TRUE">
+              <TRUE>
+                <COMMAND cmd="open_dlg" param0="SU_AUTO_DLG" step_dlg="FALSE"/>
+              </TRUE>
+            </IF>
+          </TRUE>
+          <FALSE>
+            <IF cmd="check_option" param0="wia" param1="TRUE" >
+              <TRUE>
+                <IF cmd="open_dlg" param0="SELECT_SW" param1="INSTALL" step_dlg="TRUE">
+                  <TRUE>
+                    <COMMAND cmd="open_dlg" param0="SU_AUTO_DLG" step_dlg="FALSE"/>
+                  </TRUE>
+                </IF>
+              </TRUE>
+              <FALSE>
+                <COMMAND cmd="open_dlg" param0="SELECT_SW_NO_SMARTUPDATE" param1="INSTALL" step_dlg="TRUE"/>
+              </FALSE>
+            </IF>
+          </FALSE>
+        </IF>
+      </TRUE>
+    </IF>-->
+
+
+    <!-- Set Printer Settings -->
+
+    <LABEL>SET_PRINTER_SETTING_STEP</LABEL>
+
+    <IF cmd="check_option" param0="upload_ampv" param1="TRUE">
+      <TRUE>
+        <IF cmd="is_ampv_collection_off">
+          <TRUE>
+            <COMMAND cmd="open_dlg" param0="CHECK_UPDATES_DLG" step_dlg="FALSE"/>
+          </TRUE>
+        </IF>
+      </TRUE>
+    </IF>
+
+    <!--<IF cmd="is_printer_selected">
+      <TRUE>-->
+        <COMMAND cmd="open_dlg" param0="SET_PRINTER_SETTING" param1="MAIN"  step_dlg="TRUE"/>
+      <!--</TRUE>
+    </IF>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 
+			*
+			*
+			* Smart Update Step
+			*
+			*
+		<LABEL>SMART_UPDATE_STEP</LABEL>
+		
+		<IF cmd="check_option" param0="smartupdate" param1="TRUE" >
+			<TRUE>		
+				
+				<COMMAND cmd="set_history_section" param0="SMART_UPDATE" step_dlg="TRUE"/>	
+								
+				
+				<IF cmd="OPEN_DLG" param0="SU_CONFIRM_DLG" dwparam="1" step_dlg="TRUE">
+				
+				
+					<TRUE> <COMMAND cmd="open_dlg" param0="SU_AUTO_DLG" step_dlg="FALSE"/> </TRUE>										
+				</IF>
+			</TRUE>			
+		</IF>
+		-->
+
+    <!-- Write Item Info again ??? -->
+    <COMMAND cmd="WRITE_ITEM_INFO" param0="CUSTOM"/>
+
+
+
+
+
+
+
+
+
+
+    <!-- 
+			*
+			*
+			* Erp ????
+			*
+			* if the speed is over than 45 ppm for mono printer, ERP should be shown with duplex option
+			* else, show erp notice only.
+		-->
+    <!--<IF cmd="check_option" param0="erp" param1="FALSE">
+      <FALSE>
+        <IF cmd="is_erp_country">
+          <TRUE>
+            <IF cmd="is_printer_selected">
+              <TRUE>
+                <COMMAND cmd="open_dlg" param0="ERP_NOTICE" step_dlg="TRUE"/>
+              </TRUE>
+              <FALSE>
+                <COMMAND cmd="open_dlg" param0="ERP_NOTICE_NO_PRINTER" step_dlg="TRUE"/>
+              </FALSE>
+            </IF>
+          </TRUE>
+        </IF>
+      </FALSE>
+    </IF>-->
+
+
+
+
+
+
+
+
+
+
+    <!-- 
+			*
+			*
+			* Copying Files
+			*
+			*
+			-->
+
+    <!--  <COMMAND cmd="copy_file" param0="PRINTER_CENTER_FILECOPY/PRINTER_CENTER_EXE"/> -->
+
+
+    <!-- History Panel Section Setting -->
+    <COMMAND cmd="set_history_section" param0="INSTALLATION" step_dlg="TRUE"/>
+
+
+    <!--Install Samsung Printer Center-->
+    <IF cmd="is_spc_selected">
+      <TRUE>
+        <COMMAND cmd="execute_file" param0="__SPC_SRC_PATH__" param1="/install /s /cimode"/>
+      </TRUE>
+    </IF>
+
+
+
+      <IF cmd="check_option" param0="install_vc" param1="TRUE">
+      <TRUE>
+        <COMMAND cmd="open_dlg" param0="INSTALL_ADV" param1="WAIT_INSTALL_VC" />
+      </TRUE>
+      <FALSE>
+        <COMMAND cmd="open_dlg" param0="INSTALL_ADV" />
+      </FALSE>
+    </IF>
+
+ 
+    <!-- 
+			*
+			* Create Total Uninstaller shortcut
+			*
+		-->
+    <COMMAND cmd="create_shortcut" param0="TOTAL_UNINSTALL_SHORTCUT_MUI" />
+	<!-- 
+		*
+		* Create Data collection Settings shortcut (GDPR)
+		*
+	-->	
+	<COMMAND cmd="create_shortcut" param0="GDPR_SHORTCUT_MUI" />
+    <COMMAND cmd="add_reg" param0="TOTALUNINSTALLER_KEY" />
+
+
+
+
+    <COMMAND cmd="restore_search_update"/>
+
+
+    <!-- Delete old AMPV agree -->
+    <COMMAND cmd="add_reg" param0="WEB_AGREE_FALSE_UPD" />
+    <COMMAND cmd="add_reg" param0="WEB_AGREE_FALSE_64_UPD" />
+    <COMMAND cmd="delete_reg" param0="WEB_AGREE_FALSE_UPD" />
+    <COMMAND cmd="delete_reg" param0="WEB_AGREE_FALSE_64_UPD" />
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 
+			*
+			*
+			* Finish Dialog
+			*
+			*
+			-->
+    <COMMAND cmd="set_history_section" param0="FINISH" step_dlg="TRUE"/>
+
+    <COMMAND cmd="set_variable" param0="VAL.TEST_PAGE" param1=""/>
+
+    <COMMAND cmd="set_variable" param0="VAL.PRINTER_CENTER" param1=""/>
+    <COMMAND cmd="set_variable" param0="VAL.SCP_REGISTER" param1=""/>
+<!--
+    <COMMAND cmd="copy_file" param0="INSTALL_COPY_FILE_INFO/DEVMONDLL_WIN32"/>
+    <COMMAND cmd="copy_file" param0="INSTALL_COPY_FILE_INFO/DEVMONDLL_WIN64"/>
+-->
+    <IF cmd="is_printer_installed" operator="AND" cmd_1="is_connected">
+      <TRUE>
+        <COMMAND cmd="set_variable" param0="VAL.TEST_PAGE" param1="TEST_PAGE"/>
+
+        <COMMAND cmd="diagnosis" />
+      </TRUE>
+      <FALSE>
+        <COMMAND cmd="set_variable" param0="VAL.TEST_PAGE" param1=""/>
+      </FALSE>
+    </IF>
+
+    <IF cmd="is_printer_selected">
+      <TRUE>
+        <COMMAND cmd="set_variable" param0="VAL.PRINTER_CENTER" param1="PRINTER_CENTER"/>
+      </TRUE>
+      <FALSE>
+        <COMMAND cmd="set_variable" param0="VAL.PRINTER_CENTER" param1=""/>
+      </FALSE>
+    </IF>
+
+
+    <!--<IF cmd="check_file" param0="$DEST_INST_DIR$\MANUAL\$MANUAL_MODEL$\$MANUAL_LANG_DIR$\start_here.htm" >
+      <TRUE>
+        <COMMAND cmd="create_shortcut" param0="MANUAL_VIEWER_SHORTCUT" />
+        <COMMAND cmd="create_shortcut" param0="MANUAL_VIEWER_SHORTCUT_MUI" />
+        <COMMAND cmd="execute_file" param0="$INST_SRC_DIR$\bin\ViewUserGuide.exe" param1="/install /n __MFG__"/>
+
+        <IF cmd="check_variable" param0="VAL.PRINTER_CENTER" param1="PRINTER_CENTER" operator="AND" cmd_1="check_variable" param0_1="VAL.TEST_PAGE" param1_1="TEST_PAGE">
+          <TRUE>
+            <COMMAND cmd="open_dlg" param0="FINISH_MANUAL_SPC" param1="TEST_PAGE,PRINTER_CENTER"/>
+          </TRUE>
+          <FALSE>
+            <COMMAND cmd="open_dlg" param0="FINISH_MANUAL" param1="#VAL.TEST_PAGE#,#VAL.PRINTER_CENTER#"/>
+          </FALSE>
+        </IF>
+      </TRUE>
+      <FALSE>
+        <IF cmd="check_variable" param0="VAL.PRINTER_CENTER" param1="PRINTER_CENTER" operator="AND" cmd_1="check_variable" param0_1="VAL.TEST_PAGE" param1_1="TEST_PAGE">
+          <TRUE>
+            <COMMAND cmd="open_dlg" param0="FINISH_SPC" param1="TEST_PAGE,ALTITUDE,PRINTER_CENTER"/>
+          </TRUE>
+          <FALSE>
+            <COMMAND cmd="open_dlg" param0="FINISH" param1="#VAL.TEST_PAGE#,#VAL.PRINTER_CENTER#"/>
+          </FALSE>
+        </IF>
+      </FALSE>
+    </IF> -->
+
+
+    <IF cmd="check_file" param0="$DEST_INST_DIR$\MANUAL\$MANUAL_MODEL$\$MANUAL_LANG_DIR$\start_here.htm" >
+      <TRUE>
+        <COMMAND cmd="create_shortcut" param0="MANUAL_VIEWER_SHORTCUT" />
+        <COMMAND cmd="create_shortcut" param0="MANUAL_VIEWER_SHORTCUT_MUI" />
+        <COMMAND cmd="execute_file" param0="$INST_SRC_DIR$\bin\ViewUserGuide.exe" param1="/install /n __MFG__"/>
+      </TRUE>
+    </IF>
+
+
+    <!--<IF cmd="can_register_at_scp">
+      <TRUE>
+        <COMMAND cmd="set_variable" param0="VAL.SCP_REGISTER" param1="SCP_REGISTER"/>
+        <IF cmd="check_variable" param0="VAL.PRINTER_CENTER" param1="PRINTER_CENTER" operator="AND" cmd_1="check_variable" param0_1="VAL.TEST_PAGE" param1_1="TEST_PAGE">
+          <TRUE>
+            <COMMAND cmd="open_dlg" param0="FINISH_SPC_CLOUDPRINT" param1="TEST_PAGE,PRINTER_CENTER,SCP_REGISTER"/>
+          </TRUE>
+          <FALSE>
+            <COMMAND cmd="open_dlg" param0="FINISH_CLOUDPRINT" param1="#VAL.TEST_PAGE#,#VAL.PRINTER_CENTER#,#VAL.SCP_REGISTER#"/>
+          </FALSE>
+        </IF>
+      </TRUE>
+      <FALSE>
+        <COMMAND cmd="set_variable" param0="VAL.SCP_REGISTER" param1=""/>
+        <IF cmd="check_variable" param0="VAL.PRINTER_CENTER" param1="PRINTER_CENTER" operator="AND" cmd_1="check_variable" param0_1="VAL.TEST_PAGE" param1_1="TEST_PAGE">
+          <TRUE>
+            <COMMAND cmd="open_dlg" param0="FINISH_SPC" param1="TEST_PAGE,PRINTER_CENTER"/>
+          </TRUE>
+          <FALSE>
+            <COMMAND cmd="open_dlg" param0="FINISH" param1="#VAL.TEST_PAGE#,#VAL.PRINTER_CENTER#,#VAL.SCP_REGISTER#"/>
+          </FALSE>
+        </IF>
+      </FALSE>
+    </IF>-->
+
+
+    <!--Remove SPC option from Finish dialog for UPD3 installer-->
+
+    <IF cmd="can_register_at_scp">
+      <TRUE>
+        <COMMAND cmd="set_variable" param0="VAL.SCP_REGISTER" param1="SCP_REGISTER"/>
+        <IF cmd="check_variable" param0="VAL.SCP_REGISTER" param1="SCP_REGISTER" operator="AND" cmd_1="check_variable" param0_1="VAL.TEST_PAGE" param1_1="TEST_PAGE">
+          <TRUE>
+            <COMMAND cmd="open_dlg" param0="FINISH_CLOUDPRINT" param1="TEST_PAGE,SCP_REGISTER"/>
+          </TRUE>
+          <FALSE>
+            <COMMAND cmd="open_dlg" param0="FINISH_CLOUDPRINT" param1="#VAL.TEST_PAGE#,#VAL.SCP_REGISTER#"/>
+          </FALSE>
+        </IF>
+      </TRUE>
+      <FALSE>
+        <COMMAND cmd="set_variable" param0="VAL.SCP_REGISTER" param1=""/>
+        <IF cmd="check_variable" param0="VAL.TEST_PAGE" param1="TEST_PAGE">
+          <TRUE>
+            <COMMAND cmd="open_dlg" param0="FINISH" param1="TEST_PAGE"/>
+          </TRUE>
+          <FALSE>
+            <COMMAND cmd="open_dlg" param0="FINISH" param1="#VAL.TEST_PAGE#,#VAL.SCP_REGISTER#"/>
+          </FALSE>
+        </IF>
+      </FALSE>
+    </IF>
+    
+   
+    <!-- 
+		<COMMAND cmd="open_dlg" param0="FINISH_MANUAL_EED" param1="TEST_PAGE,EED"/>
+	-->
+	
+	<!-- Configure EED Settings -->
+	<COMMAND cmd="enable_eed"/>
+
+
+
+
+    <!-- 
+			*
+			*
+			* Smart update Finish
+			*
+			*
+			-->
+    <IF cmd="check_option" param0="wia" param1="TRUE" >
+      <TRUE>
+        <IF cmd="is_connected">
+          <TRUE>
+            <IF cmd="is_there_fw_update">
+              <TRUE>
+                <COMMAND cmd="call_fw_update" />
+              </TRUE>
+            </IF>
+          </TRUE>
+        </IF>
+
+        <COMMAND cmd="restore_max_connection" />
+
+        <COMMAND cmd="delete_wia_download_files" />
+      </TRUE>
+    </IF>
+
+
+    <!-- Duplex option is set again 
+		<IF cmd="check_option" param0="duplex" param1="TRUE">
+			<TRUE>	<COMMAND cmd="set_duplex_option" />	</TRUE>
+		</IF>
+		-->
+
+
+    <!--
+			*
+			*
+			*	END of Installation
+			*	
+			*
+			-->
+
+    <IF cmd="check_option" param0="dotnetInstall" param1="TRUE">
+      <TRUE>
+        <IF cmd ="is_component_installing" param0="EPM">
+          <TRUE>
+            <COMMAND cmd="execute_file" param0="__EPM2_DOTNET_HANDLER_EXE__" param1="__EPM2_DOTNET_HANDLER_PARAM__"/>
+          </TRUE>
+        </IF>
+
+        <IF cmd ="is_component_installing" param0="EED">
+          <TRUE>
+            <COMMAND cmd="execute_file" param0="__EED_DOTNET_HANDLER_EXE__"/>
+          </TRUE>
+        </IF>
+      </TRUE>
+    </IF>
+
+    <IF cmd ="is_component_installing" param0="EDC">
+      <TRUE>
+        <COMMAND cmd="execute_file" param0="__EDC_INSTALL_HELPER_EXE__" param1="/S"/>
+      </TRUE>
+    </IF>
+	
+	<IF cmd ="is_component_installing" param0="USD">
+      <TRUE>
+		<IF cmd="is64">
+			<TRUE><COMMAND cmd="execute_file" param0="__USD_WIAINST_64__" param1="__USD_WIAINST_PARAM__"/></TRUE>
+			<FALSE><COMMAND cmd="execute_file" param0="__USD_WIAINST_32__" param1="__USD_WIAINST_PARAM__"/></FALSE>
+		</IF>
+      </TRUE>
+    </IF>
+
+
+    <!-- AMPV tag increment for Connection Type: USB,Network,Wireless,None -->
+
+    <IF cmd="check_option" param0="use_ampv_dll" param1="TRUE">
+      <TRUE>
+
+        <!-- LOCAL -->
+        <IF cmd="check_variable" param0="VAL.CONNECTION_TYPE" param1="LOCAL_CONNECTION">
+          <TRUE>
+            <COMMAND cmd="IncrementAMPV" param0="ConnectionTypeUSB"/>
+          </TRUE>
+        </IF>
+
+        <!-- Network -->
+        <IF cmd="check_variable" param0="VAL.CONNECTION_TYPE" param1="NETWORK_CONNECTION">
+          <TRUE>
+            <COMMAND cmd="IncrementAMPV"  param0="ConnectionTypeNetwork"/>
+          </TRUE>
+        </IF>
+
+        <!-- Wireless -->
+        <IF cmd="check_variable" param0="VAL.CONNECTION_TYPE" param1="WIRELESS_CONNECTION">
+          <TRUE>
+            <COMMAND cmd="IncrementAMPV" param0="ConnectionTypeWireless"/>
+          </TRUE>
+        </IF>
+
+        <!-- Not Connected -->
+        <IF cmd="check_variable" param0="VAL.CONNECTION_TYPE" param1="NO_CONNECTION">
+          <TRUE>
+            <COMMAND cmd="IncrementAMPV"  param0="ConnectionTypeNone"/>
+          </TRUE>
+        </IF>
+
+
+
+        <!-- AMPV tag increment for wireless method : USB or wi-fi-->
+        <IF cmd="check_variable" param0="VAL.CONNECTION_TYPE" param1="WIRELESS_CONNECTION">
+          <TRUE>
+            <IF cmd="check_variable" param0="VAL.WIRELESS_METHOD" param1="YES">
+              <TRUE>
+                <!--AMPV tag increment when Wireless Wi-Fi Setup Completed-->
+                <COMMAND cmd="IncrementAMPV" param0="WirelessSetupMethod_WWS"/>
+              </TRUE>
+              <FALSE>
+                <IF cmd="check_variable" param0="VAL.SEACHING.PARAM" param1="Wireless">
+                  <TRUE>
+                    <!--AMPV tag increment when USB Completed-->
+                    <COMMAND cmd="IncrementAMPV" param0="WirelessSetupMethod_USB"/>
+                  </TRUE>
+                </IF>
+              </FALSE>
+            </IF>
+          </TRUE>
+        </IF>
+
+
+        <!-- AMPV tag increment when Installation is completed-->
+        <COMMAND cmd="IncrementAMPV" param0="InstallCount"/>
+
+      </TRUE>
+    </IF>
+
+	
+	<COMMAND cmd="terminate"/>
+
+  </INSTALL>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+<!-- 
+	
+	#
+	#
+	#
+		Install Flow when the installer is launched by Samsung Printer Center ADD
+	#
+	#
+	#
+	#
+	#
+-->
+	<SPC_FLOW>
+		
+		<COMMAND cmd="set_setup_type" param0="INSTALL" />
+
+		<!-- Search Component -->
+		<COMMAND cmd="search_components"/>
+
+		<!-- Check the spooler status and start spooler if spooler is stopped -->
+		<COMMAND cmd="check_spooler" />
+
+		<!-- Add Firewall exception -->
+		<COMMAND cmd="add_firewall_exception" />
+
+		<LABEL>START_STEP</LABEL>
+
+		<!-- Init variables -->
+		<COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="NOT_DEFINE"/>
+		<COMMAND cmd="set_variable" param0="VAR.BOOL.CONNECT" param1="TRUE"/>
+		<!-- default : USB -->
+		<COMMAND cmd="set_variable" param0="VAL.WIRELESS_AUTO" param1="TRUE"/>
+
+		<COMMAND cmd="set_history" param0="HISTORY_PANEL_SPC_ADD"/>
+		
+		<!-- History Panel Section Setting -->
+		<COMMAND cmd="set_history_section" param0="FIND_PRINTER" step_dlg="TRUE"/>
+		
+		<!-- 
+			*
+			*
+			* Select Connection Type
+			*
+			*
+		-->
+				
+		<LABEL>SELECT_CONNECT_TYPE</LABEL>
+
+		<COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1=""/>
+
+		<SWITCH cmd="open_dlg" param0="SELECT_CONNECTION_EX_SPC_NOBACK" param1="USB" step_dlg="TRUE">
+
+			<!-- LOCAL -->
+			<CASE value="0">
+				<COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="LOCAL_CONNECTION"/>
+				<GOTO>LOCAL_CONNECTION</GOTO>
+			</CASE>
+
+			<!-- Network -->
+			<CASE value="1">
+				<COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="NETWORK_CONNECTION"/>
+				<COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="Network"/>
+				<GOTO>NETWORK_CONNECTION</GOTO>
+			</CASE>
+
+			<!-- Wireless -->
+			<CASE value="2">
+				<COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="WIRELESS_CONNECTION"/>
+				<COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="Wireless"/>
+				<GOTO>WIRELESS_CONNECTION</GOTO>
+			</CASE>
+
+			<!-- Not Connected -->
+			<DEFAULT>
+				<COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="NO_CONNECTION"/>
+			</DEFAULT>
+
+		</SWITCH>
+
+		<GOTO>NO_CONNECTION</GOTO>
+
+
+
+		<!-- 
+				*
+				*
+				*	Local Connection
+				*
+				*
+			 -->
+		<LABEL>LOCAL_CONNECTION</LABEL>
+
+		<IF cmd="find_local_printer" param0="SET_PORT">
+			<FALSE>
+				<COMMAND cmd="open_dlg" param0="GUIDE_USB" step_dlg="FALSE"/>
+			</FALSE>
+		</IF>
+
+		<GOTO>SELECT_SOFTWARE_STEP</GOTO>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<!-- 
+				*
+				*
+				*	Network Connection
+				*
+				*
+			 -->
+		<LABEL>NETWORK_CONNECTION</LABEL>
+
+		<SWITCH cmd="open_dlg" param0="SELECT_SETUP_TYPE_NETWORK" step_dlg="TRUE">
+		  <!-- Yes -->
+		  <CASE value="0">
+			<IF cmd="open_dlg" param0="GUIDE_NETWORK" step_dlg="TRUE">
+			  <TRUE>
+				<!-- Check Set IP -->
+				<COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="SET_IP_CONNECTION"/>
+				<GOTO>SET_IP_CONNECTION</GOTO>
+			  </TRUE>
+			</IF>
+		  </CASE>
+		</SWITCH>
+
+
+
+
+		<LABEL>SEARCH_NETWORK</LABEL>
+		<!-- 
+		*
+		*
+		* Select Printer
+		*
+		*
+		-->
+		<LABEL>PRINTER_FOUND_STEP</LABEL>
+
+		<SWITCH cmd="open_dlg" param0="FOUND_MODEL_LIST" param1="#VAL.SEACHING.PARAM#" step_dlg="TRUE">
+
+		  <!-- Direct Input -->
+		  <CASE value="12">
+			<GOTO>DIRECT_INPUT_STEP</GOTO>
+		  </CASE>
+
+		</SWITCH>
+		
+		<GOTO>SELECT_SOFTWARE_STEP</GOTO>
+
+		<!-- 
+				*
+				*
+				*	Direct Input
+				*
+				*
+				-->
+		<GOTO>DIRECT_INPUT_STEP_END</GOTO>
+
+		<LABEL>DIRECT_INPUT_STEP</LABEL>
+		<SWITCH cmd="OPEN_DLG" param0="MANUAL_SEARCH_MODEL" param1="MAIN" step_dlg="FALSE">
+
+			<!-- Range Search -->
+			<CASE value="100">
+				<COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="NETWORK"/>
+				<GOTO>SEARCH_NETWORK</GOTO>
+			</CASE>
+
+			<!-- Printer Found -->
+			<DEFAULT>
+				<COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="DIRECT_INPUT"/>
+				<GOTO>PRINTER_FOUND_STEP</GOTO>
+			</DEFAULT>
+
+		</SWITCH>
+
+		<LABEL>DIRECT_INPUT_STEP_END</LABEL>
+
+
+
+
+
+
+
+		<!-- 
+				*
+				*
+				*	Wireless Connection
+				*
+				*
+			 -->
+		<LABEL>WIRELESS_CONNECTION</LABEL>
+
+		<SWITCH cmd="open_dlg" param0="SELECT_SETUP_TYPE_WIRELESS" step_dlg="TRUE">
+		  <!-- No -->
+		  <CASE value="1">
+			<COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="Network"/>
+			<COMMAND cmd="set_variable" param0="VAL.CONNECTION_TYPE" param1="WIRELESS_CONNECTION"/>
+			<GOTO>SEARCH_NETWORK</GOTO>
+		  </CASE>
+		</SWITCH>
+
+
+
+
+		<COMMAND cmd="wsp_initialize" />
+
+		<COMMAND cmd="set_variable" param0="VAL.WIRELESS_METHOD" param1="NO"/>
+		<COMMAND cmd="set_variable" param0="VAL.CONNECTING_PARAM" param1="WSP_CONNECT"/>
+		<COMMAND cmd="set_variable" param0="VAL.WLAN_AVAILABLE" param1="NOT_DEFINE"/>
+
+
+
+
+
+		<!--       
+			================================================================
+			Searching wireless printer -> If no printer, select wireless setting method : USB or wi-fi
+			================================================================
+			-->
+
+		<LABEL>SELECT_WIRELESS_SETTING_METHOD</LABEL>
+
+		<IF cmd="check_option" param0="wws" param1="FALSE">
+		  <TRUE>
+			<GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+		  </TRUE>
+		  <FALSE>
+
+			<IF cmd="wsp_is_wlan_available" >
+			  <TRUE>
+				<COMMAND cmd="set_variable" param0="VAL.WLAN_AVAILABLE" param1="WLAN_SUPPORT"/>
+			  </TRUE>
+			  <FALSE>
+				<COMMAND cmd="set_variable" param0="VAL.WLAN_AVAILABLE" param1="WLAN_NOT_SUPPORT"/>
+			  </FALSE>
+			</IF>
+
+			<SWITCH cmd="open_dlg" param0="WSP_SELECT_WIRELESS_SETTING_METHOD" param1="#VAL.WLAN_AVAILABLE#" step_dlg="TRUE">
+			  <CASE value="0">
+				<COMMAND cmd="open_dlg" param0="WSP_GUIDE_PRINTER_TURN_ON" />
+				<GOTO>WIRELESS_WIRELESS_WIFI_SETUP</GOTO>
+			  </CASE>
+			  <CASE value="1">
+				<GOTO>WIRELESS_USB_WIFI_SETUP</GOTO>
+			  </CASE>
+			</SWITCH>
+		  </FALSE>
+		</IF>
+
+		<!--       
+			================================================================
+			Connect Printer Soft AP with Found SSID and the Network Key
+			================================================================
+			-->
+		<LABEL>WIRELESS_WIRELESS_WIFI_SETUP</LABEL>
+
+		<COMMAND cmd="set_variable" param0="VAL.WIRELESS_METHOD" param1="YES"/>
+
+		<COMMAND cmd="wsp_turnoff_networkwindow" />
+
+
+		<LABEL>WIRELESS_WIRELESS_DEVICE_CHECKING</LABEL>
+		<COMMAND cmd="set_variable" param0="VAL.IGNORE_SSID" param1="FALSE"/>
+		<COMMAND cmd="set_variable" param0="VAL.IGNORE_NETWORK_KEY" param1="FALSE"/>
+
+		<SWITCH cmd="OPEN_DLG" param0="WSP_DEVICE_CHECKING_NETWORK" param1="WSP_CHECK_NETWORK">
+		  <!-- WSP_ERROR_INVALID_PROFILE 
+					: Success to retrieve Wireless Data from the connected printer but PC profile is not available -->
+		  <CASE value="202">
+			<COMMAND cmd="set_variable" param0="VAL.WIRELESS_SETTING_METHOD" param1="WIFI"/>
+		  </CASE>
+
+		  <!-- WSP_CURRENT_SET_PROFILE 
+					: Success to retrieve Wireless Data from the connected printer and PC profile is available -->
+		  <CASE value="201">
+			<COMMAND cmd="set_variable" param0="VAL.IGNORE_SSID" param1="TRUE"/>
+			<COMMAND cmd="set_variable" param0="VAL.IGNORE_NETWORK_KEY" param1="TRUE"/>
+		  </CASE>
+
+		  <!-- WSP_ONLY_PASSWORD_NEEDED 
+					: Success to retrieve Wireless Data from the connected printer and only SSID is available -->
+		  <CASE value="203">
+			<COMMAND cmd="set_variable" param0="VAL.IGNORE_SSID" param1="TRUE"/>
+		  </CASE>
+
+
+		  <!-- Wireless setting error : Go to wireless setting through USB connection-->
+		  <CASE value="122">
+			<GOTO>SELECT_WIRELESS_SETTING_METHOD</GOTO>
+		  </CASE>
+
+		  <DEFAULT>
+			<!-- WSP_ERROR_SOFTAP_NOT_FOUND : 110 -->
+			<GOTO>SELECT_WIRELESS_SETTING_METHOD</GOTO>
+		  </DEFAULT>
+		</SWITCH>
+
+		<!--
+			
+				Open WSP Confirm Dialog
+			
+			-->
+
+		<SWITCH cmd="wsp_is_confirm_needed">
+		  <CASE value="1">
+			<!-- PBC -->
+			<LABEL>WSP_CI3_PUSH_WPS_STEP</LABEL>
+			<SWITCH cmd="OPEN_DLG" param0="WSP_PUSH_WPS" >
+			  <CASE value="3">
+				<!-- Time Out -->
+				<SWITCH cmd="OPEN_DLG" param0="WSP_PUSH_WPS_RETRY" >
+				  <CASE value="100">
+					<!-- Retry -->
+					<GOTO>WSP_CI3_PUSH_WPS_STEP</GOTO>
+				  </CASE>
+				</SWITCH>
+			  </CASE>
+
+			  <CASE value="1">
+				<!-- not started -->
+				<GOTO>SELECT_WIRELESS_SETTING_METHOD</GOTO>
+			  </CASE>
+
+			  <CASE value="2">
+				<!-- not started -->
+				<GOTO>SELECT_WIRELESS_SETTING_METHOD</GOTO>
+			  </CASE>
+			</SWITCH>
+		  </CASE>
+
+		  <CASE value="2">
+			<!-- GUI -->
+			<!-- <GOTO>WSP_CI3_WIRELESS_CONNECTING_STEP</GOTO> -->
+			<LABEL>WSP_CI3_PUSH_WPS_GUI_STEP</LABEL>
+			<SWITCH cmd="OPEN_DLG" param0="WSP_PUSH_WPS_GUI" >
+			  <CASE value="3">
+				<!-- Time Out -->
+				<SWITCH cmd="OPEN_DLG" param0="WSP_PUSH_WPS_RETRY_GUI" >
+				  <CASE value="100">
+					<!-- Retry -->
+					<GOTO>WSP_CI3_PUSH_WPS_GUI_STEP</GOTO>
+				  </CASE>
+				</SWITCH>
+			  </CASE>
+
+			  <CASE value="1">
+				<!-- not started -->
+				<GOTO>SELECT_WIRELESS_SETTING_METHOD</GOTO>
+			  </CASE>
+
+			  <CASE value="2">
+				<!-- not started -->
+				<GOTO>SELECT_WIRELESS_SETTING_METHOD</GOTO>
+			  </CASE>
+			</SWITCH>
+		  </CASE>
+
+		  <DEFAULT>
+		  </DEFAULT>
+		</SWITCH>
+
+		<!--
+			
+				Open Disconnect Wired cable Dialog
+			
+			-->
+		<IF cmd="wsp_is_wired_connected">
+		  <TRUE>
+			<COMMAND cmd="OPEN_DLG" param0="WSP_DISCONNECT_WIRED_NETWORK" />
+		  </TRUE>
+		</IF>
+
+
+		<!--
+			
+				Open Select SSID Dialog
+			
+			-->
+		<IF cmd="check_variable" param0="VAL.IGNORE_SSID" param1="FALSE">
+		  <TRUE>
+			<SWITCH cmd="open_dlg" param0="WSP_FOUND_MODEL_WWS" step_dlg="TRUE">
+
+			  <!--  200 : Advanced Setting -->
+			  <CASE value="200">
+				<IF cmd="wsp_check_capability" param0="wpa_mixed">
+					<TRUE>  <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WPA_MIXED"/> </TRUE>
+					<FALSE> <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WIFI"/> </FALSE>
+				</IF>
+				<GOTO>WSP_CI3_WIRELESS_CONFIRM_STEP</GOTO>
+			  </CASE>
+
+			  <!--  103 : Set Security Key -->
+			  <CASE value="103">
+				<IF cmd="check_variable" param0="VAL.IGNORE_NETWORK_KEY" param1="FALSE">
+				  <TRUE>
+					<COMMAND cmd="open_dlg" param0="WSP_SECURITY_KEY" step_dlg="TRUE"/>
+				  </TRUE>
+				</IF>
+			  </CASE>
+			</SWITCH>
+		  </TRUE>
+		</IF>
+
+		<GOTO>WSP_CI3_WIRELESS_CONNECTING_STEP</GOTO>
+
+
+
+
+
+
+
+
+
+		<!-- 
+			========================================================================================= 
+					Setting Confirm Dialog
+			=========================================================================================					
+			-->
+		<LABEL>WSP_CI3_WIRELESS_CONFIRM_STEP</LABEL>
+		<SWITCH cmd="open_dlg" param0="WSP_SETTING_CONFIRM" param1="WSP_CONFIRM" step_dlg="TRUE">
+		  <CASE value="300">
+			<!--  300 : Change Network -->
+			<COMMAND cmd="open_dlg" param0="WSP_SET_NET_PROTOCOL" />
+			<GOTO>WSP_CI3_WIRELESS_CONFIRM_STEP</GOTO>
+		  </CASE>
+		</SWITCH>
+
+
+
+
+
+
+
+
+
+
+
+		<!--       
+			================================================================
+			Connect Printer through USB
+			================================================================
+			-->
+		<LABEL>WIRELESS_USB_WIFI_SETUP</LABEL>
+		<COMMAND cmd="set_variable" param0="VAL.WIRELESS_METHOD" param1="NO"/>
+
+
+		<IF cmd="wsp_find_printer" >
+		  <FALSE>
+			<COMMAND cmd="OPEN_DLG" param0="WSP_CONNECT_DEVICE" />
+		  </FALSE>
+		</IF>
+
+
+
+		<!--       
+			================================================================
+			Load Current Device Settings and Wireless Network List       
+			================================================================
+			-->
+		<LABEL>WIRELESS_CI3_CHECKING_DEVICE</LABEL>
+
+		<SWITCH cmd="OPEN_DLG" param0="WSP_DEVICE_CHECKING" param1="WSP_CHECK">
+
+		  <!--  ERROR_DEVICE_DATA -->
+		  <CASE value="101">
+
+			<SWITCH cmd="OPEN_DLG" param0="WSP_CHECKING_ERROR_DEVICE_DATA">
+
+			  <!-- Retry	-->
+			  <CASE value="11">
+				<GOTO>WIRELESS_USB_WIFI_SETUP </GOTO>
+			  </CASE>
+
+			  <!-- go to select connection -->
+			  <DEFAULT>
+				<GOTO>SELECT_CONNECT_TYPE</GOTO>
+			  </DEFAULT>
+
+			</SWITCH>
+
+		  </CASE>
+
+		  <!--  ERROR_WLAN_SUPPORT -->
+		  <CASE value="102">
+			<COMMAND cmd="OPEN_DLG" param0="WSP_CHECKING_ERROR_WLAN_SUPPORT" />
+			<GOTO>SELECT_CONNECT_TYPE</GOTO>
+		  </CASE>
+
+		  <!--  WSP_ERROR_CONNECTED_WIRED -->
+		  <CASE value="107">
+			<COMMAND cmd="OPEN_DLG" param0="WSP_DISCONNECT_WIRED_NETWORK" />
+			<IF cmd="wsp_find_printer">
+			  <FALSE>
+				<COMMAND cmd="OPEN_DLG" param0="WSP_CONNECT_DEVICE" />
+			  </FALSE>
+			</IF>
+		  </CASE>
+
+		</SWITCH>
+
+
+
+
+		<!-- 
+			============================================================================================ 
+					Show Wireless Network List 
+			============================================================================================
+			-->
+		<COMMAND cmd="set_variable" param0="VAL.WIRELESS_SETTING_METHOD" param1="USB"/>
+
+		<LABEL>WSP_CI3_FOUND_MODEL_STEP</LABEL>
+
+		<SWITCH cmd="open_dlg" param0="WSP_FOUND_MODEL" step_dlg="TRUE">
+
+		  <!--  200 : Advanced Setting -->
+		  <CASE value="200">
+			<IF cmd="check_variable" param0="VAL.WIRELESS_SETTING_METHOD" param1="WIFI" >
+			  <TRUE>
+				<IF cmd="wsp_check_capability" param0="wpa_mixed">
+					<TRUE>  <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WPA_MIXED"/> </TRUE>
+					<FALSE> <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WIFI"/> </FALSE>
+				</IF>
+			  </TRUE>
+			  <FALSE>
+				<IF cmd="wsp_is_support_adhoc">
+				  <TRUE>
+					<COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING"/>
+				  </TRUE>
+				  <FALSE>
+					<IF cmd="wsp_check_capability" param0="wpa_mixed">
+						<TRUE>  <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WPA_MIXED"/> </TRUE>
+						<FALSE> <COMMAND cmd="open_dlg" param0="WSP_ADVANCED_SETTING_WIFI"/> </FALSE>
+					</IF>
+				  </FALSE>
+				  <!-- GUI -->
+				</IF>
+			  </FALSE>
+			</IF>
+		  </CASE>
+
+		  <!--  103 : Set Security Key -->
+		  <CASE value="103">
+			<COMMAND cmd="open_dlg" param0="WSP_SECURITY_KEY" step_dlg="TRUE"/>
+			<GOTO>WSP_CI3_WIRELESS_CONNECTING_STEP</GOTO>
+		  </CASE>
+
+		</SWITCH>
+
+
+
+
+
+		<!-- 
+			========================================================================================= 
+					Setting Confirm Dialog
+			=========================================================================================					
+			-->
+		<LABEL>WSP_CI3_WIRELESS_CONFIRM_STEP</LABEL>
+		<SWITCH cmd="open_dlg" param0="WSP_SETTING_CONFIRM" param1="WSP_CONFIRM" step_dlg="TRUE">
+		  <CASE value="300">
+			<!--  300 : Change Network -->
+			<COMMAND cmd="open_dlg" param0="WSP_SET_NET_PROTOCOL" />
+			<GOTO>WSP_CI3_WIRELESS_CONFIRM_STEP</GOTO>
+		  </CASE>
+		</SWITCH>
+
+
+
+		<!-- 
+			========================================================================================= 
+					Connecting Dialog
+			=========================================================================================					
+			-->
+
+
+		<LABEL>WSP_CI3_WIRELESS_CONNECTING_STEP</LABEL>
+
+
+		<IF cmd="check_variable" param0="VAL.WIRELESS_SETTING_METHOD" param1="USB" >
+		  <TRUE>
+			<IF cmd="wsp_find_printer">
+			  <FALSE>
+				<COMMAND cmd="OPEN_DLG" param0="WSP_CONNECT_DEVICE" />
+			  </FALSE>
+			</IF>
+		  </TRUE>
+		</IF>
+
+
+		<LABEL>WSP_CI3_WIRELESS_WIFI_CONNECTING_STEP</LABEL>
+
+		<IF cmd="check_variable" param0="VAL.WIRELESS_METHOD" param1="YES">
+		  <TRUE>
+			<COMMAND cmd="set_variable" param0="VAL.CONNECTING_PARAM" param1="WSP_CONNECT_NETWORK"/>
+		  </TRUE>
+		  <FALSE>
+			<COMMAND cmd="set_variable" param0="VAL.CONNECTING_PARAM" param1="WSP_CONNECT"/>
+		  </FALSE>
+		</IF>
+
+		<SWITCH cmd="open_dlg" param0="WSP_WIRELESS_CONNECTING" param1="#VAL.CONNECTING_PARAM#">
+		  <!--  101 : WSP_ERROR_DEVICE_DATA WSP_CHECKING_ERROR_DEVICE_DATA -->
+		  <CASE value="101">
+			<COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="1"/>
+		  </CASE>
+
+		  <!--  104 : WSP_ERROR_SSID -->
+		  <CASE value="104">
+			<COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1=""/>
+		  </CASE>
+
+		  <!--  105 : WSP_ERROR_SECURITY -->
+		  <CASE value="105">
+			<COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="3"/>
+		  </CASE>
+
+		  <!--  106 : WSP_ERROR_PC_CONNECTION_ERROR -->
+		  <CASE value="106">
+			<COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="2"/>
+		  </CASE>
+
+		  <!--  107 : WSP_ERROR_CONNECTED_WIRED -->
+		  <CASE value="107">
+			<COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="4"/>
+		  </CASE>
+
+		  <!--  108 : WSP_ERROR_IP_NOT_ALLOCATED -->
+		  <CASE value="108">
+			<COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="5"/>
+		  </CASE>
+
+		  <!--  109 : WSP_ERROR_GENERAL_WIRELESS -->
+		  <CASE value="109">
+			<COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="6"/>
+		  </CASE>
+
+
+		  <!-- Success -->
+		  <CASE value="0">
+			<GOTO>WIRELESS_SETTING_SUCCESS</GOTO>
+		  </CASE>
+
+		  <!--  109 : WSP_ERROR_GENERAL_WIRELESS -->
+		  <DEFAULT>
+			<COMMAND cmd="set_variable" param0="VAR.INT.FAIL_NUM" param1="6"/>
+		  </DEFAULT>
+
+		</SWITCH>
+
+		<COMMAND cmd="open_dlg" param0="WSP_CONNECTING_FAILURE#VAR.INT.FAIL_NUM#" />
+
+		<GOTO>WSP_CI3_WIRELESS_CONNECTING_STEP</GOTO>
+
+
+		<!-- 
+			===================================================================
+			Wireless Setting Completed
+			===================================================================
+			-->
+		<LABEL>WIRELESS_SETTING_SUCCESS</LABEL>
+
+		<IF cmd="check_variable" param0="VAL.WIRELESS_METHOD" param1="YES">
+		  <TRUE>
+			<!--
+					Wireless Wi-Fi Setup Completed
+				-->
+			<!--	<COMMAND cmd="open_dlg" param0="WSP_SETTING_COMPLETE_WIRELESS"/> -->
+			<COMMAND cmd="open_dlg" param0="WSP_SETTING_COMPLETE_WIRELESS_WITH_INFO"/>
+		  </TRUE>
+
+		  <FALSE>
+			<!--
+					USB Completed
+				-->
+			<IF cmd="wsp_is_wifi_direct">
+			  <TRUE>
+				<COMMAND cmd="open_dlg" param0="WSP_WIFI_DIRECT"/>
+			  </TRUE>
+			</IF>
+
+			<COMMAND cmd="open_dlg" param0="WSP_SETTING_COMPLETE"/>
+			<!--	<COMMAND cmd="open_dlg" param0="WSP_SETTING_COMPLETE_WIRELESS_WITH_INFO"/> -->
+
+		  </FALSE>
+		</IF>
+
+
+
+
+
+		<GOTO>SELECT_SOFTWARE_STEP</GOTO>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<!-- 
+				*
+				*
+				*	Set IP Address
+				*
+				*
+			 -->
+		<LABEL>SET_IP_CONNECTION</LABEL>
+
+		<SWITCH cmd="OPEN_DLG" param0="SEARCHING" param1="SETIP">
+
+			<!-- Not found -->
+			<CASE value="0">
+
+				<!-- Show Not found dialog -->
+				<COMMAND cmd="open_dlg" param0="MODEL_NOT_FOUND_SETIP" step_dlg="FALSE"/>
+
+				<!-- Show Firewall Notice -->
+				<COMMAND cmd="OPEN_DLG" param0="FIREWALL_NOTICE" step_dlg="FALSE" />
+
+				<GOTO>SET_IP_CONNECTION</GOTO>
+
+			</CASE>
+
+			<!-- found -->
+			<DEFAULT>
+
+				<!-- Set IP Dialog -->
+				<SWITCH cmd="OPEN_DLG" param0="SETIP_DLG" step_dlg="TRUE">
+
+					<!-- Search Again-->
+					<CASE value="11">
+						<!-- Show Firewall Notice -->
+						<COMMAND cmd="OPEN_DLG" param0="FIREWALL_NOTICE" step_dlg="FALSE" />
+						<GOTO>SET_IP_CONNECTION</GOTO>
+					</CASE>
+
+					<!-- Found-->
+					<DEFAULT value="1">
+						<GOTO>SELECT_SOFTWARE_STEP</GOTO>
+					</DEFAULT>
+
+				</SWITCH>
+
+			</DEFAULT>
+
+		</SWITCH>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 
+			*
+			*
+			*	No Connection
+			*
+			*
+		 -->
+		<LABEL>NO_CONNECTION</LABEL>
+		<GOTO>SELECT_SOFTWARE_STEP</GOTO>
+
+
+
+
+
+
+
+
+
+		<!-- 
+		*
+		*
+		* Install
+		*
+		*
+		-->
+
+  	<LABEL>SELECT_SOFTWARE_STEP</LABEL>
+
+    <!-- History Panel Section Setting -->
+    <COMMAND cmd="set_history_section" param0="INSTALLATION" step_dlg="TRUE"/>
+	
+		<COMMAND cmd="WRITE_ITEM_INFO" />
+	
+		<COMMAND cmd="open_dlg" param0="SET_PRINTER_SETTING" param1="MAIN"  step_dlg="TRUE"/>
+	
+		
+		<COMMAND cmd="install" dwparam="1"/>
+		
+		<!-- Configure EED Settings 
+		<COMMAND cmd="enable_eed"/>
+		-->
+
+		<COMMAND cmd="terminate"/>
+	</SPC_FLOW>
+
+	
+	
+	
+	<!--
+	*
+	*	
+	*	Update Printer Port .. launched by SPC
+	*
+	*
+	-->
+
+	<SPC_CHANGE_PORT_FLOW>
+
+		<!-- Add Firewall exception -->
+		<COMMAND cmd="add_firewall_exception" />
+		<COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="ALL"/>
+
+		<!-- 
+		*
+		*
+		* Select Printer
+		*
+		*
+		-->
+		<LABEL>SEARCH_NETWORK</LABEL>
+
+		<SWITCH cmd="open_dlg" param0="FOUND_MODEL_LIST_NOBACK" param1="#VAL.SEACHING.PARAM#" dwparam="1" step_dlg="TRUE"> <!-- dwparam 1 means that found model list should be selected only 1 printer -->
+
+		  <!-- Direct Input -->
+		  <CASE value="12">
+			<GOTO>DIRECT_INPUT_STEP</GOTO>
+		  </CASE>
+
+		</SWITCH>
+		
+		<COMMAND cmd="update_spc_printer_port"/>
+		
+		<COMMAND cmd="terminate"/>
+
+		<!-- 
+				*
+				*
+				*	Direct Input
+				*
+				*
+				-->
+
+		<LABEL>DIRECT_INPUT_STEP</LABEL>
+		<SWITCH cmd="OPEN_DLG" param0="MANUAL_SEARCH_MODEL_NOHISTORY" param1="MAIN" step_dlg="FALSE">
+
+			<!-- Range Search -->
+			<CASE value="100">
+				<COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="NETWORK"/>
+				<GOTO>SEARCH_NETWORK</GOTO>
+			</CASE>
+
+			<!-- Printer Found -->
+			<DEFAULT>
+				<COMMAND cmd="set_variable" param0="VAL.SEACHING.PARAM" param1="DIRECT_INPUT"/>
+				<GOTO>SEARCH_NETWORK</GOTO>
+			</DEFAULT>
+
+		</SWITCH>
+
+
+		<COMMAND cmd="terminate"/>
+	</SPC_CHANGE_PORT_FLOW>
+
+  <!--
+	*
+	*
+	*	Maintenance
+	*
+	*
+	-->
+  <MAINTENANCE>
+
+    <!--	
+	=============   Remove  =============   
+	-->
+    <COMMAND cmd="set_setup_type" param0="UNINSTALL" />
+
+    <COMMAND cmd="set_history" param0="REMOVE"/>
+
+    <COMMAND cmd="set_history_section" param0="SELECT_FEATURES" step_dlg="TRUE"/>
+
+    <COMMAND cmd="open_dlg" param0="REMOVE_SELECT_FEATURES" param1="REMOVE"/>
+
+    <COMMAND cmd="set_history_section" param0="UNINSTALL" step_dlg="TRUE"/>
+
+    <COMMAND cmd="open_dlg" param0="REMOVE_INSTALL" param1="REMOVE"/>
+
+    <COMMAND cmd="set_history_section" param0="FINISH" step_dlg="TRUE"/>
+
+    <COMMAND cmd="open_dlg" param0="REMOVE_FINISH"/>
+
+    <COMMAND cmd="terminate"/>
+
+
+  </MAINTENANCE>
+
+
+  <EMBEDDED_INSTALL>
+    <COMMAND cmd="set_setup_type" param0="INSTALL" />
+    <COMMAND cmd="check_spooler" />
+
+    <COMMAND cmd="open_dlg" param0="START_EMBEDDED" step_dlg="TRUE"/>
+
+    <COMMAND cmd="set_history" param0="EMBEDDED_INSTALL"/>
+
+    <COMMAND cmd="set_history_section" param0="LICENSE_AGREEMENT" step_dlg="FALSE"/>
+    <COMMAND cmd="open_dlg" param0="LICENSE_AGREEMENT" step_dlg="TRUE"/>
+    <COMMAND cmd="set_install_mode" param0="SMART_INST" />
+    <COMMAND cmd="WRITE_ITEM_INFO" />
+    <COMMAND cmd="set_history_section" param0="INSTALLATION" step_dlg="TRUE"/>
+    <COMMAND cmd="open_dlg" param0="COPY_FILE"/>
+    <COMMAND cmd="open_dlg" param0="INSTALL"/>
+    <COMMAND cmd="set_history_section" param0="FINISH" step_dlg="TRUE"/>
+    <COMMAND cmd="open_dlg" param0="FINISH"/>
+
+    <!--
+			*
+			*
+			*	END of Installation
+			*	
+			*
+			-->
+    <COMMAND cmd="terminate"/>
+  </EMBEDDED_INSTALL>
+
+
+
+
+  <!-- 
+			*
+			*
+			*	Command Flow
+			*
+			*
+	-->
+  <FLOW_INIT>
+
+    <!-- VC Distributable -->
+
+    <IF cmd="check_option" param0="install_vc" param1="TRUE">
+      <TRUE>
+        <IF cmd="is_vc_installed" param0="INSTALL_VC" param1="VC_REDIST">
+          <FALSE>
+            <COMMAND cmd="execute_file_wait" param0="$INST_SRC_DIR$\DATA\vcredist_x86.exe" param1="/q /r:n" param2="INSTALL_VC" />
+          </FALSE>
+        </IF>
+      </TRUE>
+    </IF>
+
+    <!-- Prepare Advertising Dialog -->
+    <!-- <COMMAND cmd="prepare_advertising"/> -->
+
+    <!-- Load DLLs -->
+    <!-- <COMMAND cmd="load_dlls"/> -->
+
+    <!-- Search Component -->
+    <COMMAND cmd="search_components"/>
+
+    <!--<IF cmd="is_ampv_collection_off">
+      <FALSE>
+        <COMMAND cmd="start_check_updates_thread"/>
+      </FALSE>
+    </IF>-->
+
+    <!-- Check the spooler status and start spooler if spooler is stopped -->
+    <COMMAND cmd="check_spooler" />
+
+    <!-- Set max connection for Smart update -->
+    <IF cmd="check_option" param0="smartupdate" param1="TRUE" >
+      <TRUE>
+        <COMMAND cmd="set_max_connection" dwparam="10"/>
+      </TRUE>
+    </IF>
+
+    <!-- Add Firewall exception -->
+    <COMMAND cmd="add_firewall_exception" />
+
+    <!-- Turn Off seaching update server when PnP -->
+    <COMMAND cmd="turn_off_search_update"/>
+
+    <!-- Pre Install -->
+    <COMMAND cmd="copy_file" param0="PRE_INSTALL_INFO/SSPORT_XP64"/>
+    <COMMAND cmd="copy_file" param0="PRE_INSTALL_INFO/SSPORT_VISTA32"/>
+    <COMMAND cmd="copy_file" param0="PRE_INSTALL_INFO/SSPORT_VISTA64"/>
+    <COMMAND cmd="execute_file" param0="$INST_SRC_DIR$\VECP\VISTA_64\sskinst.exe"/>
+
+  </FLOW_INIT>
+</FLOW>
