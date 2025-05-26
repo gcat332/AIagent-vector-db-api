@@ -1,18 +1,10 @@
 # import subprocess
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import torch
-from langchain.embeddings import HuggingFaceEmbeddings
 from function.ask_gemini import ask_gemini
 # from function.kb_create import update_knowledge_vector
 
 app = FastAPI()
-
-# Load Embeddings
-embeddings = HuggingFaceEmbeddings(
-    model_name="intfloat/multilingual-e5-base",
-    model_kwargs={"device": "cuda" if torch.cuda.is_available() else "cpu"}
-)
 
 # @app.post("/update_vector")
 # def update_vector():

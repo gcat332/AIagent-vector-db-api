@@ -1,7 +1,7 @@
 import os
 import google.generativeai as genai
-from langchain.vectorstores import FAISS
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores.faiss import FAISS
+from langchain_huggingface import HuggingFaceEmbeddings
 import torch
 
 # ตั้งค่า Gemini API

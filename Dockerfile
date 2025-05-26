@@ -1,7 +1,7 @@
 # ✅ Base image ขนาดเล็ก
-FROM python:3.10.14
+FROM python:3.10-slim
 
-# ✅ ติดตั้ง system dependencies ที่จำเป็นสำหรับบางไลบรารี (เช่น pdf2image, pytesseract)
+# ✅ ติดตั้ง system dependencies ที่จำเป็นสำหรับบางไลบรารี
 RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     libsm6 \
