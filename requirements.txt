@@ -1,16 +1,6 @@
-beautifulsoup4
 fastapi
-faiss-cpu
 google-generativeai
-huggingface-hub
 langchain
-openpyxl
-pandas
-pdf2image
-pillow
-pydantic
-python-multipart
-pytesseract
 torch
-tqdm
+pydantic
 uvicorn
