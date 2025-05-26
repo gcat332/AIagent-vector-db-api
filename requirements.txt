@@ -1,6 +1,10 @@
+faiss-cpu
 fastapi
 google-generativeai
 langchain
+langchain-community
+sentence-transformers
 torch
 pydantic
 uvicorn
+pandas

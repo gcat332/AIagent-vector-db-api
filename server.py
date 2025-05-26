@@ -1,10 +1,10 @@
-import subprocess
+# import subprocess
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import torch
 from langchain.embeddings import HuggingFaceEmbeddings
 from function.ask_gemini import ask_gemini
-from function.kb_create import update_knowledge_vector
+# from function.kb_create import update_knowledge_vector
 
 app = FastAPI()
 
