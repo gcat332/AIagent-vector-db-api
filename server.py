@@ -14,13 +14,13 @@ embeddings = HuggingFaceEmbeddings(
     model_kwargs={"device": "cuda" if torch.cuda.is_available() else "cpu"}
 )
 
-@app.post("/update_vector")
-def update_vector():
-    try:
-        subprocess.run(["python", "function/vector_create.py"], check=True)
-        return {"status": "✅ Vector creation completed."}
-    except subprocess.CalledProcessError as e:
-        raise HTTPException(status_code=500, detail=f"⚠️ Error updating vector: {e}")
+# @app.post("/update_vector")
+# def update_vector():
+#     try:
+#         subprocess.run(["python", "function/vector_create.py"], check=True)
+#         return {"status": "✅ Vector creation completed."}
+#     except subprocess.CalledProcessError as e:
+#         raise HTTPException(status_code=500, detail=f"⚠️ Error updating vector: {e}")
 
 @app.post("/update_knowledge")
 def update_knowledge():
