@@ -22,15 +22,15 @@ embeddings = HuggingFaceEmbeddings(
 #     except subprocess.CalledProcessError as e:
 #         raise HTTPException(status_code=500, detail=f"⚠️ Error updating vector: {e}")
 
-@app.post("/update_knowledge")
-def update_knowledge():
-    try:
-        VECTORSTORE_DIR = "database/vectorstore_db"
-        OUTPUT_CSV = "database/datalake_db/knowledge_base.csv"
-        update_knowledge_vector(VECTORSTORE_DIR, OUTPUT_CSV)
-        return {"status": "✅ Knowledge creation completed."}
-    except subprocess.CalledProcessError as e:
-        raise HTTPException(status_code=500, detail=f"⚠️Error creating knowledge base: {e}")
+# @app.post("/update_knowledge")
+# def update_knowledge():
+#     try:
+#         VECTORSTORE_DIR = "database/vectorstore_db"
+#         OUTPUT_CSV = "database/datalake_db/knowledge_base.csv"
+#         update_knowledge_vector(VECTORSTORE_DIR, OUTPUT_CSV)
+#         return {"status": "✅ Knowledge creation completed."}
+#     except subprocess.CalledProcessError as e:
+#         raise HTTPException(status_code=500, detail=f"⚠️Error creating knowledge base: {e}")
 
 class AgentQuery(BaseModel):
     chat_history: str
