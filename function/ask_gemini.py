@@ -5,7 +5,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 import torch
 
 # ตั้งค่า Gemini API
-os.environ["GOOGLE_API_KEY"] = "AIzaSyDoeFXNAZ40C6j2Pwn_He5ZkU_pCIdzQ0k"
+# os.environ["GOOGLE_API_KEY"] = ""
 genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 gemini_model = genai.GenerativeModel("gemini-2.0-flash")
 
