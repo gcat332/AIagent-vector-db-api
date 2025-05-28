@@ -57,10 +57,6 @@ def ask_mfecgpt(chat_history: str, question: str) -> str:
     </div>
     </โครงสร้างในการตอบ>
 
-    <ข้อมูลอ้างอิง>
-        {context}
-    </ข้อมูลอ้างอิง>
-
     <บทสนทนาก่อนหน้า>
         {chat_history}
     </บทสนทนาก่อนหน้า>
@@ -68,12 +64,21 @@ def ask_mfecgpt(chat_history: str, question: str) -> str:
     **หมายเหตุ:**
     หากคำถามนี้เกี่ยวข้องหรือมีเนื้อหาต่อเนื่องกับประวัติสนทนา กรุณาตอบโดยอ้างอิงเรื่องราวและข้อมูลในประวัติการสนทนาอย่างถูกต้องด้วย
     """
+    prompt = f"""
+    <ข้อมูลอ้างอิง>
+        {context}
+    </ข้อมูลอ้างอิง>
+
+    <คำถาม>
+        {question}
+    </คำถาม>
+    """
     try:
         response = client.chat.completions.create(
             model="gpt-4.1",
             messages=[
                 {"role": "system", "content": agentRole},
-                {"role": "user", "content": question}
+                {"role": "user", "content": prompt}
             ]
         )
         return str(response.choices[0].message.content).strip();
