@@ -1,7 +1,7 @@
 faiss-cpu
 fastapi
 sentence-transformers
-google-generativeai
+openai
 langchain
 langchain-community
 langchain_huggingface

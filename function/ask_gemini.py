@@ -1,8 +1,8 @@
 import os
+import torch
 import google.generativeai as genai
 from langchain_community.vectorstores.faiss import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
-import torch
 
 # ตั้งค่า Gemini API
 # os.environ["GOOGLE_API_KEY"] = ""

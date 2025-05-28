@@ -1,8 +1,9 @@
 import os
+import torch
 from openai import OpenAI
 from langchain_community.vectorstores.faiss import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
-import torch
+
 
 # ตั้งค่า MFECGPT API
 # os.environ["MFEC_API_KEY"] = "sk-"

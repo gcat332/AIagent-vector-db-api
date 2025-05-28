@@ -1,7 +1,7 @@
 # import subprocess
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from function.ask_gemini import ask_gemini
+# from function.ask_gemini import ask_gemini
 from function.ask_mfecgpt import ask_mfecgpt
 # from function.kb_create import update_knowledge_vector
 
@@ -29,13 +29,13 @@ class AgentQuery(BaseModel):
     chat_history: str
     question: str
 
-@app.post("/agent_gemini")
-def query_agent_gemini(data: AgentQuery):
-    try:
-        answer = ask_gemini(data.chat_history, data.question)
-        return {"answer": answer}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"⚠️Error gemini agent API: {e}")
+# @app.post("/agent_gemini")
+# def query_agent_gemini(data: AgentQuery):
+#     try:
+#         answer = ask_gemini(data.chat_history, data.question)
+#         return {"answer": answer}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"⚠️Error gemini agent API: {e}")
 
 @app.post("/agent_mfecgpt")
 def query_agent_mfecgpt(data: AgentQuery):
