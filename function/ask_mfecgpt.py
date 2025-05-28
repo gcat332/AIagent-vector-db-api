@@ -5,7 +5,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 import torch
 
 # ตั้งค่า MFECGPT API
-os.environ["MFEC_API_KEY"] = "sk-XXmy4FZgXVSCVX4s3DQVXQ"
+# os.environ["MFEC_API_KEY"] = "sk-"
 client = OpenAI(
     base_url="https://gpt.mfec.co.th/litellm",
     api_key=os.environ["MFEC_API_KEY"],
