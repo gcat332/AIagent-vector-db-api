@@ -12,7 +12,7 @@ from langchain.schema import Document
 # ตั้งค่า API key ของ Gemini
 # For security, it's better to load API keys from environment variables or a secure config
 # However, using the provided setup for this example.
-os.environ["GOOGLE_API_KEY"] = "AIzaSyDoeFXNAZ40C6j2Pwn_He5ZkU_pCIdzQ0k" # Replace with your actual key if needed
+os.environ["GOOGLE_API_KEY"] = "" # Replace with your actual key if needed
 genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
 # Ensure the model name is valid for your access level.
