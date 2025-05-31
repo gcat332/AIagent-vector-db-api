@@ -1,0 +1,2 @@
+docker build -t gcr.io/robotic-parsec-461008-b0/ai-agent-api:latest --platform linux/amd64 .
+docker push gcr.io/robotic-parsec-461008-b0/ai-agent-api:latest

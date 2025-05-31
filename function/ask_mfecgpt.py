@@ -83,4 +83,4 @@ def ask_mfecgpt(chat_history: str, question: str) -> str:
         )
         return str(response.choices[0].message.content).strip();
     except Exception as e:
-        return f"⚠️ เกิดข้อผิดพลาดขณะเรียก Gemini API: {e}"
+        return f"⚠️ เกิดข้อผิดพลาดขณะเรียก MFEC_GPT API: {e}"
